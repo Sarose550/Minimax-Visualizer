@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="minimax.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description"
+    content="A tool to help students understand minimax and alpha-beta pruning." />
+  <title>Minimax & Alpha-Beta Pruning Simulator</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2DAFE8;">
+  <a class="navbar-brand" href="#">Minimax</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Edit
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+          <a class="dropdown-item" href="#" onclick="hideButtons()">Clear Parents</a>
+          <a class="dropdown-item" href="#" onclick="hideButtons()">Reset</a>
+        </div>
+      </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        View Example
+      </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+          <a class="dropdown-item" href="#" onclick="hideButtons()">Example 1</a>
+          <a class="dropdown-item" href="#" onclick="hideButtons()">Example 2</a>
+          <a class="dropdown-item" href="#" onclick="hideButtons()">Example 3</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Run
+      </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+          <a class="dropdown-item" href="#" onclick="showButtons()">Minimax</a>
+          <a class="dropdown-item" href="#" onclick="showButtons()">Alpha-Beta Pruning</a>
+    </li>
+  </ul>
+  <ul class="navbar-nav navbar-right mr-auto">
+    <button class="btn btn-success navbar-btn-right mr-1" id="button0" style="display: none;"> << </button>
+    <button class="btn btn-success navbar-btn-right mr-1" id="button1" style="display: none;"> < </button>
+    <button class="btn btn-success navbar-btn-right mr-1" id="button2" style="display: none;"> View All </button>
+    <button class="btn btn-success navbar-btn-right mr-1" id="button3" style="display: none;"> > </button>
+    <button class="btn btn-success navbar-btn-right mr-1" id="button4" style="display: none;"> >> </button>
+  </ul>
+  </div>
+</nav>
+</body>
+
+
+</html>
