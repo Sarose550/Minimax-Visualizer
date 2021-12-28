@@ -8,6 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script type="text/javascript" src="minimax.js"></script>
+  <script type="text/javascript" src="utilities.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description"
@@ -56,16 +57,9 @@
     <button class="btn btn-success navbar-btn-right mr-1" id="button1" style="display: none;" disabled> < </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button2" style="display: none;"> View All </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button3" style="display: none;"> > </button>
-    <button class="btn btn-success navbar-btn-right mr-1" id="button4" style="display: none;"> >> </button>
+    <button class="btn btn-success navbar-btn-right mr-1" id="button4" style="display: none;" onclick="disableButton(3,4);enableButton(0,1);"> >> </button>
   </ul>
-<!---  <script>
-    for(let i = 0; i < 5; i++){
-      if (!('#button').hasAttr('disabled'))
-        $('#button').attr('onclick', 'someFunction();');
-      else
-      $('#button').removeattr('onclick');
-    }
-  </script> --->
+
   </div>
 </nav>
 </body>
