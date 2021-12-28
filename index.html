@@ -52,12 +52,20 @@
     </li>
   </ul>
   <ul class="navbar-nav navbar-right mr-auto">
-    <button class="btn btn-success navbar-btn-right mr-1" id="button0" style="display: none;"> << </button>
-    <button class="btn btn-success navbar-btn-right mr-1" id="button1" style="display: none;"> < </button>
+    <button class="btn btn-success navbar-btn-right mr-1" id="button0" style="display: none;" disabled> << </button>
+    <button class="btn btn-success navbar-btn-right mr-1" id="button1" style="display: none;" disabled> < </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button2" style="display: none;"> View All </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button3" style="display: none;"> > </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button4" style="display: none;"> >> </button>
   </ul>
+<!---  <script>
+    for(let i = 0; i < 5; i++){
+      if (!('#button').hasAttr('disabled'))
+        $('#button').attr('onclick', 'someFunction();');
+      else
+      $('#button').removeattr('onclick');
+    }
+  </script> --->
   </div>
 </nav>
 </body>
