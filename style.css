@@ -1,0 +1,9 @@
+.navbar .collapse ul li:hover{
+  background-color: #2986cc;
+  transition: all 0.3s ease;
+}
+
+.navbar .collapse ul li .dropdown-menu .dropdown-item:hover{
+  background-color: #eeeeee;
+  transition: all 0.3s ease;
+}
