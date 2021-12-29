@@ -7,3 +7,23 @@
   background-color: #eeeeee;
   transition: all 0.3s ease;
 }
+
+table th {
+   text-align: center;
+}
+
+table td {
+   text-align: center;
+}
+
+tr {
+   line-height: 3px;
+   min-height: 3px;
+   height: 3px;
+}
+
+td {
+   line-height: 3px;
+   min-height: 3px;
+   height: 3px;
+}
