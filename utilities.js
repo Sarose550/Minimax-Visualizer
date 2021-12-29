@@ -26,3 +26,27 @@ function enableButton(){
     $("#button"+arguments[i]).attr("onclick",onclicks[arguments[i]]);
   }
 }
+
+function miniEx(canvasID){
+  var minikey = new Node();
+  minikey["type"] = MINNIE;
+  minikey["x"] = 40;
+  minikey["y"] = 22;
+  minikey.draw(canvasID);
+}
+
+function maxiEx(canvasID){
+  var maxikey = new Node();
+  maxikey["type"] = MAXIE;
+  maxikey["x"] = 40;
+  maxikey["y"] = 15;
+  maxikey.draw(canvasID);
+}
+
+function leafEx(canvasID){
+  var leafkey = new Node();
+  leafkey["type"] = LEAF;
+  leafkey["x"] = 40;
+  leafkey["y"] = 17;
+  leafkey.draw(canvasID);
+}
