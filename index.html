@@ -9,6 +9,33 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script type="text/javascript" src="minimax.js"></script>
   <script type="text/javascript" src="utilities.js"></script>
+  <style>
+
+	#nodeOptions {
+		display: none;
+    background-color: #f2f2f2;
+    border: 1px solid gray;
+    box-shadow: 1px 1px 1px 1px;
+    font-size: 11px;
+    padding: 3px 5px;
+	}
+
+	#nodeOptions div {
+		cursor: default;
+    border-bottom: 1px solid gray;
+    padding: 2px 4px;
+    color: black;
+	}
+
+  #nodeOptions div:hover{
+    background: rgb(217,217,217);
+  }
+
+	#main {
+		margin: auto;
+		position: relative;
+	}
+  </style>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description"
@@ -16,7 +43,7 @@
   <title>Minimax & Alpha-Beta Pruning Simulator</title>
 </head>
 
-<body onload='miniEx("key-minnie"); maxiEx("key-maxie"); leafEx("key-leaf");'>
+<body onload='initKey(); initRoot();'>
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2DAFE8;">
   <a class="navbar-brand" href="#">Minimax</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +82,7 @@
   <ul class="navbar-nav navbar-right mr-auto">
     <button class="btn btn-success navbar-btn-right mr-1" id="button0" style="display: none;" disabled> << </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button1" style="display: none;" disabled> < </button>
-    <button class="btn btn-success navbar-btn-right mr-1" id="button2" style="display: none;"> View All </button>
+    <button class="btn btn-success navbar-btn-right mr-1" id="button2" style="display: none;"> Play </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button3" style="display: none;"> > </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button4" style="display: none;" onclick="disableButton(3,4);enableButton(0,1);"> >> </button>
   </ul>
@@ -79,7 +106,7 @@
               <th scope=col></th>
               <th scope="col">v ≤ α</th>
               <th scope="col"> α < v < β </th>
-              <th scope="col"> v ≤ β </th>
+              <th scope="col"> β ≤ v </th>
             </tr>
           </thead>
           <tbody>
@@ -133,7 +160,7 @@
 </table>
 
 <div id="main">
-  <canvas width="1000" height="600" id="drawing" style="position: relative; top:0px; left:0px;">
+  <canvas width="1200" height="600" id="drawing" style="position: relative; top:0px; left:0px;">
 		Oh no! Your browser is too old to support canvas! Update to view this page.
 	</canvas>
   <div id="nodeOptions" style="position: absolute; display: none;">
