@@ -27,7 +27,6 @@ function initRoot(){
   root.draw("drawing");
   nodeDict[root.id] = root;
   leafDict[root.id] = root;
-  nodesPerLevel.push(1);
   document.getElementById("drawing").addEventListener('mousedown', mouseClick, false);
 }
 
