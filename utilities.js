@@ -39,7 +39,7 @@ function maxiEx(canvasID){
   var maxikey = new Node();
   maxikey["type"] = MAXIE;
   maxikey["x"] = 40;
-  maxikey["y"] = 15;
+  maxikey["y"] = 13;
   maxikey.draw(canvasID);
 }
 
@@ -49,4 +49,10 @@ function leafEx(canvasID){
   leafkey["x"] = 40;
   leafkey["y"] = 17;
   leafkey.draw(canvasID);
+}
+
+function initKey(){
+  miniEx("key-minnie");
+  maxiEx("key-maxie");
+  leafEx("key-leaf");
 }
