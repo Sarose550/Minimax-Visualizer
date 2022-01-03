@@ -70,18 +70,23 @@ function cloneTree(rootNode,selectedChild=null){
   }
   var selectedClone = null;
   for(var i = 0; i < rootNode.children.length; i++){
+    //console.log(i);
     var curChild = rootNode.children[i];
     var newChildFeedback = cloneTree(curChild,selectedChild);
     var newChild = newChildFeedback[0];
-    selectedClone = newChildFeedback[1];
+    if(selectedClone == null){
+      selectedClone = newChildFeedback[1];
+    }
     newChild.parent = newTree;
     newTree.children.push(newChild);
   }
-  if(selectedClone == null){
-    if(selectedChild == rootNode){
-      selectedClone = newTree;
-    }
+  if(selectedChild == rootNode){
+    //console.log("found the node!");
+    selectedClone = newTree;
   }
+  //console.log("done");
+  //console.log("returning:");
+  //console.log([newTree,selectedClone]);
   return [newTree,selectedClone];
 }
 
