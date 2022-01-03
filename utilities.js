@@ -214,3 +214,7 @@ function resizeHeight(){
   c.height += 100;
   canvasHeight += 100;
 }
+
+function resetTree(){
+  drawTreeCode(toTreeCode(root));
+}
