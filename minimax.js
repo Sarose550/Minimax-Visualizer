@@ -5,7 +5,7 @@ const MINNIE = 0;
 const MAXIE = 1;
 const LEAF = 2;
 
-const levelSpace = 50;
+const levelSpace = 100;
 //const minSpacing;
 const canvasWidth = 1260;
 const nodeCircRadius = 20;
@@ -13,20 +13,19 @@ const leafHeight = 30;
 const leafRatio = 1.5;
 var canvasHeight = 650;
 
-var nodeDict = new Object();
-var leafDict = new Object();
+var numLeaves = 0;
 var root = new Node();
 root.type = LEAF;
 root.x = canvasWidth/2;
-root.y = levelSpace;
+root.y = levelSpace/4;
 
 function initRoot(){
   //console.log("initRoot");
   document.getElementById("drawing").width = canvasWidth;
   document.getElementById("drawing").height = canvasHeight;
+  document.getElementById("drawing").getContext("2d").save();
   root.draw("drawing");
-  nodeDict[root.id] = root;
-  leafDict[root.id] = root;
+  numLeaves++;
   document.getElementById("drawing").addEventListener('mousedown', mouseClick, false);
 }
 
@@ -37,9 +36,6 @@ function resizeHeight(){
 }
 
 function Node(){
-  this.id = "_";
-  //if it's the root then the ID is the empty array, otherwise it specifys the node's path
-  //ID is set by the parent when adding a child
   this.val = null;
   this.parent = null;
   this.x;
@@ -48,73 +44,96 @@ function Node(){
   this.children = new Array();
   this.draw = drawNode;
   this.assign = writeValue;
-  this.clear = erase;
-  this.sprout;
+  this.sprout = addChild;
   this.die;
 }
 
-//function addChild
+function positionNodes(rootNode, numLeaves){
+  var currentSlot = new Array();
+  currentSlot.push(1);
+  positionNodesHelper(rootNode,numLeaves,currentSlot);
+}
 
-function erase(canvasID){
-  switch (this.type){
-    case MINNIE:
-      //console.log("MINNIE");
-      //console.log(canvasID);
-      var c = document.getElementById(canvasID);
-      //console.log(c);
-      var ctx = c.getContext("2d");
-      var r = nodeCircRadius;
-      ctx.beginPath();
-      ctx.moveTo(this.x-leafRatio*Math.sqrt(3)*r/2, this.y+r/2);
-      ctx.lineTo(this.x+leafRatio*Math.sqrt(3)*r/2, this.y+r/2);
-      ctx.lineTo(this.x, this.y-r);
-      ctx.closePath();
-
-      ctx.strokeStyle = "#FFFFFF";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.lineWidth = 1;
-
-      ctx.fillStyle = "#FFFFFF";
-      ctx.fill();
-      break;
-    case MAXIE:
-      //console.log("MAXIE");
-      //console.log(canvasID);
-      var c = document.getElementById(canvasID);
-      //console.log(c);
-      var ctx = c.getContext("2d");
-      var r = nodeCircRadius;
-      ctx.beginPath();
-      ctx.moveTo(this.x-leafRatio*Math.sqrt(3)*r/2, this.y-r/2);
-      ctx.lineTo(this.x+leafRatio*Math.sqrt(3)*r/2, this.y-r/2);
-      ctx.lineTo(this.x, this.y+r);
-      ctx.closePath();
-
-      ctx.strokeStyle = "#FFFFFF";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.lineWidth = 1;
-      ctx.fillStyle = "#FFFFFF";
-      ctx.fill();
-      break;
-    case LEAF:
-      //console.log("LEAF");
-      //console.log(canvasID);
-      var c = document.getElementById(canvasID);
-      //console.log(c);
-      var ctx = c.getContext("2d");
-      ctx.strokeStyle = "#FFFFFF";
-      ctx.lineWidth = 2;
-      ctx.rect(this.x-leafRatio*leafHeight/2,this.y-leafHeight/2,leafRatio*leafHeight,leafHeight);
-
-      ctx.fillStyle = "#FFFFFF";
-      ctx.fill();
-
-      ctx.stroke();
-      ctx.lineWidth = 1;
-      break;
+function positionNodesHelper(rootNode,numLeaves,currentSlot){
+  if(rootNode.type == LEAF){
+    rootNode.x = currentSlot[0] / (numLeaves + 1) * canvasWidth;
+    currentSlot[0]++;
+    return;
   }
+  else{
+    for(var i = 0; i < rootNode.children.length; i++){
+      positionNodesHelper(rootNode.children[i],numLeaves,currentSlot);
+    }
+    if(rootNode.type != LEAF){
+      rootNode.x = (rootNode.children[0].x + rootNode.children[rootNode.children.length-1].x)/2;
+    }
+  }
+
+}
+
+function drawAll(canvasID){
+  console.log("redrawing whole tree");
+  var c = document.getElementById(canvasID);
+  var ctx = c.getContext("2d");
+  ctx.beginPath();
+
+	ctx.fillStyle = "white";
+	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+	ctx.closePath();
+  //draw edges and then nodes
+  drawEdges(root,canvasID);
+  drawAllNodes(root,canvasID);
+}
+
+function drawEdges(rootNode,canvasID){
+  var c = document.getElementById(canvasID);
+  var ctx = c.getContext("2d");
+  for(var i = 0; i < rootNode.children.length; i++){
+    var curNode = rootNode.children[i];
+    //console.log("drawing edge from (" + rootNode.x + ", " + rootNode.y + ") to (" + curNode.x + ", " + curNode.y + ")");
+    ctx.strokeStyle = "black";
+    //console.log(ctx.strokeStyle);
+    ctx.beginPath();
+    ctx.moveTo(rootNode.x,rootNode.y);
+    ctx.lineTo(curNode.x,curNode.y);
+    ctx.closePath();
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    drawEdges(curNode,canvasID);
+  }
+}
+
+function drawAllNodes(rootNode,canvasID){
+  var c = document.getElementById(canvasID);
+  var ctx = c.getContext("2d");
+  rootNode.draw(canvasID);
+  for(var i = 0; i < rootNode.children.length; i++){
+    var curNode = rootNode.children[i];
+    drawAllNodes(curNode,canvasID);
+  }
+}
+
+
+function addChild(){
+  newChild = new Node();
+  newChild.type = LEAF;
+  newChild.y = this.y + levelSpace;
+  newChild.parent = this;
+  if(this.type == LEAF){
+      if(this.parent == null){
+        this.type = MAXIE;
+      }
+      else{
+        this.type = 1-this.parent.type;
+      }
+      this.val = null;
+  }
+  else{
+    numLeaves++;
+  }
+  this.children.push(newChild);
+  positionNodes(root,numLeaves);
+  drawAll("drawing");
 }
 
 function writeValue(canvasID){
@@ -127,75 +146,79 @@ function writeValue(canvasID){
 		alert("Input must be an integer or a decimal.");
 		return;
 	}
+	this.val = parseFloat(value);
   this.draw(canvasID);
-	this.value = parseFloat(value);
-
-  var c = document.getElementById(canvasID);
-  //console.log(c);
-  var ctx = c.getContext("2d");
-  ctx.fillStyle = "black";
-	ctx.font = "bold 13px 'Courier New'";
-  letterwidth = 8;
-  valueSize = letterwidth * value.length;
-  ctx.fillText(value, this.x - valueSize/2, this.y + letterwidth/2);
-
 }
 
 function drawNode(canvasID,outlineColor="black"){
   switch (this.type){
-    case MINNIE:
-      //console.log("MINNIE");
+    case MAXIE:
+      console.log("drawing MAXIE");
       //console.log(canvasID);
       var c = document.getElementById(canvasID);
       //console.log(c);
       var ctx = c.getContext("2d");
       var r = nodeCircRadius;
+      console.log(ctx.strokeStyle);
+      console.log(ctx.fillStyle);
+
+      ctx.strokeStyle = outlineColor;
+      ctx.fillStyle = "#23E965";
       ctx.beginPath();
       ctx.moveTo(this.x-leafRatio*Math.sqrt(3)*r/2, this.y+r/2);
       ctx.lineTo(this.x+leafRatio*Math.sqrt(3)*r/2, this.y+r/2);
       ctx.lineTo(this.x, this.y-r);
+      ctx.lineTo(this.x-leafRatio*Math.sqrt(3)*r/2, this.y+r/2);
       ctx.closePath();
-
-      ctx.strokeStyle = outlineColor;
       ctx.stroke();
-
-      ctx.fillStyle = "#23E965";
       ctx.fill();
       break;
-    case MAXIE:
-      //console.log("MAXIE");
-      //console.log(canvasID);
+    case MINNIE:
+      console.log("drawing MINNIE");
       var c = document.getElementById(canvasID);
-      //console.log(c);
       var ctx = c.getContext("2d");
       var r = nodeCircRadius;
+
+      console.log(ctx.strokeStyle);
+      console.log(ctx.fillStyle);
+      ctx.fillStyle = "#E98D23";
+      ctx.strokeStyle = outlineColor;
       ctx.beginPath();
       ctx.moveTo(this.x-leafRatio*Math.sqrt(3)*r/2, this.y-r/2);
       ctx.lineTo(this.x+leafRatio*Math.sqrt(3)*r/2, this.y-r/2);
       ctx.lineTo(this.x, this.y+r);
+      ctx.lineTo(this.x-leafRatio*Math.sqrt(3)*r/2, this.y-r/2);
       ctx.closePath();
-
-      ctx.strokeStyle = outlineColor;
       ctx.stroke();
 
-      ctx.fillStyle = "#E98D23";
       ctx.fill();
       break;
     case LEAF:
-      //console.log("LEAF");
+      console.log("drawing LEAF");
       //console.log(canvasID);
       var c = document.getElementById(canvasID);
       //console.log(c);
       var ctx = c.getContext("2d");
+
+      console.log(ctx.strokeStyle);
+      console.log(ctx.fillStyle);
       ctx.strokeStyle = outlineColor;
       ctx.rect(this.x-leafRatio*leafHeight/2,this.y-leafHeight/2,leafRatio*leafHeight,leafHeight);
-
+      ctx.stroke();
       ctx.fillStyle = "white";
       ctx.fill();
-
-      ctx.stroke();
       break;
   }
+  if(this.val != null){
+    console.log("writing " + this.val);
+    var valueStr = "" + this.val;
+    ctx.fillStyle = "black";
+  	ctx.font = "bold 13px 'Courier New'";
+    letterwidth = 8;
+    valueSize = letterwidth * valueStr.length;
+    ctx.fillText(valueStr, this.x - valueSize/2, this.y + letterwidth/2);
+  }
+
 }
 
 
@@ -207,14 +230,7 @@ function mouseClick(e) {
 
 	$(nodeOptions).hide();
 
-	var selectedNode = null;
-  for(const key in nodeDict){
-    let node = nodeDict[key];
-    if(detect(node,e.offsetX,e.offsetY)){
-      selectedNode = node;
-      break;
-    }
-  }
+	var selectedNode = detectFromRoot(root,e.offsetX,e.offsetY);
 
 	if (selectedNode == null) {
 		return;
@@ -226,7 +242,7 @@ function mouseClick(e) {
 	div.innerHTML = "Add Child";
 	$(div).bind('click', function(){
 		$(nodeOptions).hide();
-		//selectedNode.sprout();
+	   selectedNode.sprout();
 	});
 	$(nodeOptions).append(div);
 
@@ -270,6 +286,19 @@ function detect(node,mouse_x,mouse_y){
       return isInLeaf(mouse_x,mouse_y,node.x,node.y);
       break;
   }
+}
+
+function detectFromRoot(rootNode,mouse_x,mouse_y){
+  if(detect(rootNode,mouse_x,mouse_y)){
+    return rootNode;
+  }
+  for(var i = 0; i < rootNode.children.length; i++){
+    candidate = detectFromRoot(rootNode.children[i],mouse_x,mouse_y);
+    if(candidate != null){
+      return candidate;
+    }
+  }
+  return null;
 }
 
 function isInMinnie(x, y, center_x, center_y) {
