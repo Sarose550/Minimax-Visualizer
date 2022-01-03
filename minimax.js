@@ -306,7 +306,7 @@ function detectFromRoot(rootNode,mouse_x,mouse_y,idx=null){
   return [null,idx];
 }
 
-function isInMinnie(x, y, center_x, center_y) {
+function isInMinnie(x,y,center_x,center_y) {
   var radius = nodeCircRadius;
 	var dx = (x-center_x) / leafRatio;
   var dy = y-center_y;
