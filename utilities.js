@@ -130,10 +130,16 @@ function drawTreeCode(treeStr){
   var treeFeedback = loadTreeCodeHelper(treeStr,0);
   var tree = treeFeedback[0];
   var newNumLeaves = treeFeedback[1];
+  var max_y = treeFeedback[2];
   if(tree != null){
     root.children = new Array();
     root = tree;
     numLeaves = newNumLeaves;
+    if(max_y > canvasHeight){
+      canvasHeight = max_y + levelSpace;
+      var c = document.getElementById("drawing");
+      c.height = canvasHeight;
+    }
     positionNodes(root,numLeaves);
     drawAll("drawing");
   }
@@ -144,12 +150,12 @@ function drawTreeCode(treeStr){
 
 function loadTreeCodeHelper(treeStr,level){
   //if treeStr encodes a valid tree, it returns an array:
-  // [root node of tree with the same x and y coordinates, # of leaves]
-  //if not, it returns [null,null].
+  // [root node of tree with the same x and y coordinates, # of leaves, # of times resizing]
+  //if not, it returns [null,null,null].
 
   //first, check if it's a leaf encoding
   if(treeStr.length < 3 || treeStr.at(0) != "(" || treeStr.at(-1) != ")"){
-    return [null,null];
+    return [null,null,null];
   }
 
   var tree = new Node();
@@ -158,7 +164,7 @@ function loadTreeCodeHelper(treeStr,level){
   if(isNumber(strBody)){
     tree.type = LEAF;
     tree.val = parseFloat(strBody);
-    return [tree,1];
+    return [tree,1,tree.y];
   }
   else{
     tree.type = 1-(level%2);
@@ -181,24 +187,26 @@ function loadTreeCodeHelper(treeStr,level){
       }
     }
     if(parenDepth < 0){
-      return [null,null];
+      return [null,null,null];
     }
   }
   if(parenDepth > 0 || subTrees.length == 0){
-    return [null,null];
+    return [null,null,null];
   }
   var totalLeaves = 0;
+  var max_y = tree.y;
   for(var i = 0; i < subTrees.length; i++){
     var candidateFeedback = loadTreeCodeHelper(subTrees[i],level+1);
     var candidate = candidateFeedback[0];
     if(candidate == null){
-      return [null,null];
+      return [null,null,null];
     }
     tree.children.push(candidate);
     candidate.parent = tree;
     totalLeaves += candidateFeedback[1];
+    max_y = Math.max(max_y,candidateFeedback[2]);
   }
-  return [tree,totalLeaves];
+  return [tree,totalLeaves,max_y];
 }
 
 function resizeHeight(){
