@@ -11,29 +11,10 @@ const canvasWidth = 1260;
 const nodeCircRadius = 20;
 const leafHeight = 30;
 const leafRatio = 1.5;
-var canvasHeight = 650;
+var canvasHeight = 675;
 
 var numLeaves = 0;
-var root = new Node();
-root.type = LEAF;
-root.x = canvasWidth/2;
-root.y = levelSpace/4;
-
-function initRoot(){
-  //console.log("initRoot");
-  document.getElementById("drawing").width = canvasWidth;
-  document.getElementById("drawing").height = canvasHeight;
-  document.getElementById("drawing").getContext("2d").save();
-  root.draw("drawing");
-  numLeaves++;
-  document.getElementById("drawing").addEventListener('mousedown', mouseClick, false);
-}
-
-function resizeHeight(){
-  var c = document.getElementById("drawing");
-  c.height += 100;
-  canvasHeight += 100;
-}
+var root;
 
 function Node(){
   this.val = null;
@@ -45,7 +26,31 @@ function Node(){
   this.draw = drawNode;
   this.assign = writeValue;
   this.sprout = addChild;
-  this.die;
+  this.die = killSelf;
+}
+
+function killSelf(i){
+  numLeaves -= countLeaves(this);
+  this.parent.children.splice(i,1);
+  if(this.parent.children.length == 0){
+    this.parent.type = LEAF;
+    numLeaves++;
+  }
+  this.parent = null;
+  positionNodes(root,numLeaves);
+  drawAll("drawing");
+}
+
+function countLeaves(node){
+  sum = 0;
+  if(node.type == LEAF){
+    //console.log("found leaf");
+    sum++;
+  }
+  for(var idx = 0; idx < node.children.length; idx++){
+    sum += countLeaves(node.children[idx]);
+  }
+  return sum;
 }
 
 function positionNodes(rootNode, numLeaves){
@@ -72,7 +77,6 @@ function positionNodesHelper(rootNode,numLeaves,currentSlot){
 }
 
 function drawAll(canvasID){
-  console.log("redrawing whole tree");
   var c = document.getElementById(canvasID);
   var ctx = c.getContext("2d");
   ctx.beginPath();
@@ -118,6 +122,9 @@ function addChild(){
   newChild = new Node();
   newChild.type = LEAF;
   newChild.y = this.y + levelSpace;
+  if(newChild.y > canvasHeight){
+    resizeHeight();
+  }
   newChild.parent = this;
   if(this.type == LEAF){
       if(this.parent == null){
@@ -153,14 +160,11 @@ function writeValue(canvasID){
 function drawNode(canvasID,outlineColor="black"){
   switch (this.type){
     case MAXIE:
-      console.log("drawing MAXIE");
       //console.log(canvasID);
       var c = document.getElementById(canvasID);
       //console.log(c);
       var ctx = c.getContext("2d");
       var r = nodeCircRadius;
-      console.log(ctx.strokeStyle);
-      console.log(ctx.fillStyle);
 
       ctx.strokeStyle = outlineColor;
       ctx.fillStyle = "#23E965";
@@ -174,13 +178,9 @@ function drawNode(canvasID,outlineColor="black"){
       ctx.fill();
       break;
     case MINNIE:
-      console.log("drawing MINNIE");
       var c = document.getElementById(canvasID);
       var ctx = c.getContext("2d");
       var r = nodeCircRadius;
-
-      console.log(ctx.strokeStyle);
-      console.log(ctx.fillStyle);
       ctx.fillStyle = "#E98D23";
       ctx.strokeStyle = outlineColor;
       ctx.beginPath();
@@ -194,23 +194,20 @@ function drawNode(canvasID,outlineColor="black"){
       ctx.fill();
       break;
     case LEAF:
-      console.log("drawing LEAF");
       //console.log(canvasID);
       var c = document.getElementById(canvasID);
       //console.log(c);
       var ctx = c.getContext("2d");
-
-      console.log(ctx.strokeStyle);
-      console.log(ctx.fillStyle);
       ctx.strokeStyle = outlineColor;
+      ctx.beginPath();
       ctx.rect(this.x-leafRatio*leafHeight/2,this.y-leafHeight/2,leafRatio*leafHeight,leafHeight);
+      ctx.closePath();
       ctx.stroke();
       ctx.fillStyle = "white";
       ctx.fill();
       break;
   }
   if(this.val != null){
-    console.log("writing " + this.val);
     var valueStr = "" + this.val;
     ctx.fillStyle = "black";
   	ctx.font = "bold 13px 'Courier New'";
@@ -230,7 +227,11 @@ function mouseClick(e) {
 
 	$(nodeOptions).hide();
 
-	var selectedNode = detectFromRoot(root,e.offsetX,e.offsetY);
+	var mouseFeedback = detectFromRoot(root,e.offsetX,e.offsetY);
+  var selectedNode = mouseFeedback[0];
+  var idx = mouseFeedback[1];
+
+  //console.log(idx);
 
 	if (selectedNode == null) {
 		return;
@@ -261,7 +262,7 @@ function mouseClick(e) {
 		div.innerHTML = "Delete Node";
 		$(div).bind('click', function(){
 			$(nodeOptions).hide();
-			//selectedNode.die();
+			selectedNode.die(idx);
 		});
 		$(nodeOptions).append(div);
 	}
@@ -288,17 +289,17 @@ function detect(node,mouse_x,mouse_y){
   }
 }
 
-function detectFromRoot(rootNode,mouse_x,mouse_y){
+function detectFromRoot(rootNode,mouse_x,mouse_y,idx=null){
   if(detect(rootNode,mouse_x,mouse_y)){
-    return rootNode;
+    return [rootNode,idx];
   }
   for(var i = 0; i < rootNode.children.length; i++){
-    candidate = detectFromRoot(rootNode.children[i],mouse_x,mouse_y);
-    if(candidate != null){
-      return candidate;
+    candidateFeedback = detectFromRoot(rootNode.children[i],mouse_x,mouse_y,i);
+    if(candidateFeedback[0] != null){
+      return candidateFeedback;
     }
   }
-  return null;
+  return [null,idx];
 }
 
 function isInMinnie(x, y, center_x, center_y) {
