@@ -31,7 +31,7 @@ function miniEx(canvasID){
   var minikey = new Node();
   minikey["type"] = MINNIE;
   minikey["x"] = 40;
-  minikey["y"] = 22;
+  minikey["y"] = 13;
   minikey.draw(canvasID);
 }
 
@@ -39,7 +39,7 @@ function maxiEx(canvasID){
   var maxikey = new Node();
   maxikey["type"] = MAXIE;
   maxikey["x"] = 40;
-  maxikey["y"] = 13;
+  maxikey["y"] = 22;
   maxikey.draw(canvasID);
 }
 
