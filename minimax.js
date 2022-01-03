@@ -1,4 +1,8 @@
 //TODO:
+//Add the drawing methods required for minimax / alpha-beta pruning
+//-add alpha and beta attributes, drawing intervals on the edges, pruning edges, highlighting
+//Add the algorithms and animations
+
 
 //the three types of nodes
 const MINNIE = 0;
