@@ -1,9 +1,17 @@
-var allSeqs;
+var steps;
+var speed;//the user will be able to speed it up or slow it down, 0.25x to 4.0x
 
-function Frame(tree, tableInst=null){
-  this.tree = tree;
-  this.tableInst = tableInst;
-  this.display;
+function initSteps(){
+  steps = new Sequence([new Frame(root)]);
+}
+
+function Frame(tree, tableInstr=null){
+  this.tree = cloneTree(tree);
+  this.tableInstr = tableInstr;
+  this.display = () => {
+      root = this.tree;
+      drawAll("drawing");
+  };
 }
 
 function Sequence(frames){
@@ -13,41 +21,110 @@ function Sequence(frames){
     this.selectedFrame = frames[0];
   }
   this.selectedFrameidx = 0;
-  this.addFrame = function(newFrame){
-                      this.frames.push(newFrame);
-                      this.selectedFrame = this.frames[this.selectedFrameidx];
-                    };
-  this.play;
-}
-
-function SlideShow(sequences){
-  this.sequences = sequences;
-  this.selectedSeq = null;
-  if(sequenes.length > 0){
-    this.selectedSeq = sequenes[0];
-  }
-  this.selectedSeqidx = 0;
-  this.addSeq = function(newSeq){
-                      this.sequences.push(newSeq);
-                      this.selectedSeq = this.sequenes[this.selectedSeqidx];
-                    };
+  this.addFrame = (newFrame) => {
+      this.frames.push(newFrame);
+      this.selectedFrame = this.frames[this.selectedFrameidx];
+    };
+  this.loadFrame = () => {this.selectedFrame.display();};
+  this.selectFirst = firstFrame;
+  this.selectLast = lastFrame;
+  this.selectPrev = prevFrame;
+  this.selectNext = nextFrame;
   this.present;
 }
 
-function compileMinimax(){
-  return compileMinimaxHelper(root, root, new SlideShow([new Sequence([])]));
+function firstFrame(){
+  this.selectedFrameidx = 0;
+  this.selectedFrame = this.frames[this.selectedFrameidx];
+  disableButton(0,1);
+  enableButton(3,4);
 }
 
-function compileMinimaxHelper(tree, selectedNode, slides){
-  for(var i = 0; i < rootNode.children.length; i++){
-    var nextTreeFeedback = cloneTree(tree, selectedNode);
-    var nextTree = nextTreeFeedback[0];
-    var nextSelectedNode = nextTreeFeedback[1];
-    nextSelectedNode.searching = true;
-    slides.selectedSeq.addFrame()
+function lastFrame(){
+  this.selectedFrameidx = this.frames.length-1;
+  this.selectedFrame = this.frames[this.selectedFrameidx];
+  disableButton(3,4);
+  enableButton(0,1);
+}
+
+function nextFrame(){
+  this.selectedFrameidx++;
+  this.selectedFrame = this.frames[this.selectedFrameidx];
+  if(this.selectedFrameidx == this.frames.length-1){
+    disableButton(3,4);
   }
-  //If we've hit a leaf, add the frames for modifying the parent's value
-  if(selectedNode.type == LEAF){
+  enableButton(0,1);
+}
+
+function prevFrame(){
+  this.selectedFrameidx--;
+  this.selectedFrame = this.frames[this.selectedFrameidx];
+  if(this.selectedFrameidx == 0){
+    disableButton(0,1);
+  }
+  enableButton(3,4);
+}
+
+function showFirst(){
+  steps.selectFirst();
+  steps.loadFrame();
+}
+
+function showLast(){
+  steps.selectLast();
+  steps.loadFrame();
+}
+
+function showNext(){
+  steps.selectNext();
+  steps.loadFrame();
+}
+
+function showPrev(){
+  steps.selectPrev();
+  steps.loadFrame();
+}
+
+function compileMinimax(){
+  if(!isTree(root)){
+    alert("Must assign values to all leaf nodes first.");
     return;
+  }
+  showButtons();
+  disableButton(0,1);
+  enableButton(3,4);
+  drawTreeCode(toTreeCode(root));
+  initSteps();
+  //console.log(steps);
+  //steps.loadFrame();
+  compileMinimaxHelper(root, root, steps);//the first frame holds the starting configuration
+  root.status = SEARCHED;
+  steps.addFrame(new Frame(root));
+}
+
+function compileMinimaxHelper(tree, selectedNode, frames){
+  selectedNode.status = BOLD;
+  if(selectedNode.parent != null){
+    selectedNode.parent.status = SEARCHING;
+  }
+  frames.addFrame(new Frame(tree));
+  for(var i = 0; i < selectedNode.children.length; i++){
+    var nextNode = selectedNode.children[i];
+    compileMinimaxHelper(tree,nextNode,frames);
+    if(selectedNode.type == MAXIE){
+      if(selectedNode.val == null){
+        selectedNode.val = Number.NEGATIVE_INFINITY;
+      }
+      selectedNode.val = Math.max(selectedNode.val, nextNode.val);
+    }
+    if(selectedNode.type == MINNIE){
+      if(selectedNode.val == null){
+        selectedNode.val = Number.POSITIVE_INFINITY;
+      }
+      selectedNode.val = Math.min(selectedNode.val, nextNode.val);
+    }
+    nextNode.status = SEARCHED;
+    selectedNode.status = BOLD;
+    frames.addFrame(new Frame(tree));
   }
 }
