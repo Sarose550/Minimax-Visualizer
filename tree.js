@@ -9,6 +9,14 @@ const MINNIE = 0;
 const MAXIE = 1;
 const LEAF = 2;
 
+const UNSEARCHED = 0;
+const BOLD = 1;
+const SEARCHING = 2;
+const SEARCHED = 3;
+//for pruned nodes:
+const PRUNED = 4;
+const DISCARDED = 5;
+
 const levelSpace = 100;
 //const minSpacing;
 const canvasWidth = 1260;
@@ -25,9 +33,8 @@ function Node(){
   this.parent = null;
   this.x;
   this.y;
-  this.type;//Minnie, maxie or leaf
-  this.searched = false;
-  this.searching = false;
+  this.type;
+  this.status = UNSEARCHED;
   this.children = new Array();
   this.draw = drawNode;
   this.assign = writeValue;
@@ -59,7 +66,7 @@ function countLeaves(node){
   return sum;
 }
 
-function cloneTree(rootNode,selectedChild=null){
+function cloneTree(rootNode){
   var newTree = new Node();
   var attributes = Object.keys(rootNode);
   for(var i = 0; i < attributes.length; i++){
@@ -68,26 +75,12 @@ function cloneTree(rootNode,selectedChild=null){
       newTree[attr] = rootNode[attr];
     }
   }
-  var selectedClone = null;
   for(var i = 0; i < rootNode.children.length; i++){
-    //console.log(i);
-    var curChild = rootNode.children[i];
-    var newChildFeedback = cloneTree(curChild,selectedChild);
-    var newChild = newChildFeedback[0];
-    if(selectedClone == null){
-      selectedClone = newChildFeedback[1];
-    }
+    var newChild = cloneTree(rootNode.children[i]);
     newChild.parent = newTree;
     newTree.children.push(newChild);
   }
-  if(selectedChild == rootNode){
-    //console.log("found the node!");
-    selectedClone = newTree;
-  }
-  //console.log("done");
-  //console.log("returning:");
-  //console.log([newTree,selectedClone]);
-  return [newTree,selectedClone];
+  return newTree;
 }
 
 function positionNodes(rootNode, numLeaves){
@@ -131,17 +124,28 @@ function drawEdges(rootNode,canvasID){
   var ctx = c.getContext("2d");
   for(var i = 0; i < rootNode.children.length; i++){
     var curNode = rootNode.children[i];
-    //console.log("drawing edge from (" + rootNode.x + ", " + rootNode.y + ") to (" + curNode.x + ", " + curNode.y + ")");
-    ctx.strokeStyle = "black";
-    //console.log(ctx.strokeStyle);
-    ctx.beginPath();
-    ctx.moveTo(rootNode.x,rootNode.y);
-    ctx.lineTo(curNode.x,curNode.y);
-    ctx.closePath();
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    drawEdge(rootNode,curNode,ctx);
     drawEdges(curNode,canvasID);
   }
+}
+
+function drawEdge(start,end,context){
+    //console.log(ctx.strokeStyle);
+  if(end.status == SEARCHED){
+    context.strokeStyle = "blue";
+  }
+  else if((end.status == SEARCHING || end.status == BOLD) && start.status == SEARCHING){
+    context.strokeStyle = "red";
+  }
+  else{
+    context.strokeStyle = "black";
+  }
+  context.beginPath();
+  context.moveTo(start.x,start.y);
+  context.lineTo(end.x,end.y);
+  context.closePath();
+  context.lineWidth = 1;
+  context.stroke();
 }
 
 function drawAllNodes(rootNode,canvasID){
@@ -195,15 +199,29 @@ function writeValue(canvasID){
 }
 
 function drawNode(canvasID,outlineColor="black"){
+  var c = document.getElementById(canvasID);
+  var ctx = c.getContext("2d");
+  switch (this.status) {
+    case BOLD:
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = "red";
+      break;
+    case SEARCHING:
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "red";
+      break;
+    case SEARCHED:
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "blue";
+      break;
+    default:
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = outlineColor;
+  }
   switch (this.type){
     case MAXIE:
-      //console.log(canvasID);
-      var c = document.getElementById(canvasID);
-      //console.log(c);
-      var ctx = c.getContext("2d");
       var r = nodeCircRadius;
 
-      ctx.strokeStyle = outlineColor;
       ctx.fillStyle = "#23E965";
       ctx.beginPath();
       ctx.moveTo(this.x-leafRatio*Math.sqrt(3)*r/2, this.y+r/2);
@@ -215,11 +233,8 @@ function drawNode(canvasID,outlineColor="black"){
       ctx.fill();
       break;
     case MINNIE:
-      var c = document.getElementById(canvasID);
-      var ctx = c.getContext("2d");
       var r = nodeCircRadius;
       ctx.fillStyle = "#E98D23";
-      ctx.strokeStyle = outlineColor;
       ctx.beginPath();
       ctx.moveTo(this.x-leafRatio*Math.sqrt(3)*r/2, this.y-r/2);
       ctx.lineTo(this.x+leafRatio*Math.sqrt(3)*r/2, this.y-r/2);
@@ -231,11 +246,6 @@ function drawNode(canvasID,outlineColor="black"){
       ctx.fill();
       break;
     case LEAF:
-      //console.log(canvasID);
-      var c = document.getElementById(canvasID);
-      //console.log(c);
-      var ctx = c.getContext("2d");
-      ctx.strokeStyle = outlineColor;
       ctx.beginPath();
       ctx.rect(this.x-leafRatio*leafHeight/2,this.y-leafHeight/2,leafRatio*leafHeight,leafHeight);
       ctx.closePath();
