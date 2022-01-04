@@ -1,4 +1,4 @@
-const onclicks = ["disableButton(0,1);enableButton(3,4);","","","","disableButton(3,4);enableButton(0,1);"]
+const onclicks = ["showFirst();","showPrev();","","showNext();","showLast();"]
 
 function hideButtons() {
   for(let i = 0; i < 5; i++){
@@ -122,7 +122,7 @@ function loadTreeCode(){
   if (treeStr == null) {
     return;
   }
-
+  hideButtons();
   drawTreeCode(treeStr);
 }
 
@@ -216,5 +216,8 @@ function resizeHeight(){
 }
 
 function resetTree(){
+  if(!isTree(root)){
+    return;
+  }
   drawTreeCode(toTreeCode(root));
 }
