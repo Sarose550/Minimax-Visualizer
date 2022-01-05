@@ -1,8 +1,5 @@
 const onclicks = ["showFirst();","showPrev();","","showNext();","showLast();"]
 
-//const onclicks1 = ["hideButtons();resetTree();", "hideButtons();initRoot();"]
-//const onclicks2 = ["hideButtons();drawEx1();", "hideButtons();drawEx2();", "hideButtons();drawEx3();", "loadTreeCode();", "copyTree();"]
-
 function highlightCell(i,j){
   for(var x = 0; x < 2; x++){
     for(var y = 0; y < 3; y++){
@@ -33,6 +30,7 @@ function hideButtons() {
   }
   document.getElementById("speed").style.display = "none";
   document.getElementById("speedLabel").style.display = "none";
+  $(nodeOptions).hide();
 }
 
 function showButtons() {
@@ -103,16 +101,19 @@ function initKey(){
 function drawEx1(){
   isEditing = true;
   drawTreeCode('(((((3)(17))((2)(12)))(((15))((25)(0))))((((2)(5))((3)))(((2)(14)))))');
+  $(nodeOptions).hide();
 }
 
 function drawEx2(){
   isEditing = true;
   drawTreeCode('((((4)(5))((1))((2)(-3)))(((4)(0))((2)(-2))))');
+  $(nodeOptions).hide();
 }
 
 function drawEx3(){
   isEditing = true;
   drawTreeCode('(((((5)(6))((7)(4)(5)))(((3))))((6)(((7))))((((5)))(((9)(8))((6)))))');
+  $(nodeOptions).hide();
 }
 
 function initRoot(){
@@ -126,7 +127,7 @@ function initRoot(){
   root.draw("drawing");
   numLeaves++;
   isEditing = true;
-  document.getElementById("drawing").addEventListener('mousedown', (e) => {if(isEditing){mouseClick(e);} else{$(nodeOptions).hide()}}, false);
+  document.getElementById("drawing").addEventListener('mousedown', (e) => {if(isEditing){mouseClick(e);};}, false);
   document.addEventListener('keydown', function(e) {
     if (e.defaultPrevented) {
       return;
@@ -185,6 +186,7 @@ function loadTreeCode(){
   }
   isEditing = true;
   hideButtons();
+  $(nodeOptions).hide();
   drawTreeCode(treeStr);
 }
 
@@ -286,4 +288,5 @@ function resetTree(){
     return;
   }
   drawTreeCode(toTreeCode(root));
+  $(nodeOptions).hide();
 }
