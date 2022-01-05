@@ -76,16 +76,12 @@ function showFirst(){
   steps.selectFirst();
   steps.loadFrame();
   paused = true;
-  $("#button2").text("Play");
-  enableNavbar();
 }
 
 function showLast(){
   steps.selectLast();
   steps.loadFrame();
   paused = true;
-  $("#button2").text("Play");
-  enableNavbar();
 }
 
 function showNext(){
@@ -272,7 +268,11 @@ function playBtnClick(){
 }
 
 function animate(){
-  if(paused || steps.selectedFrameidx == steps.frames.length){return;}
+  if(paused || steps.selectedFrameidx == steps.frames.length){
+    $("#button2").text("Play");
+    enableNavbar();
+    return;
+  }
   showNext();
   disableButton(1);
   // request another animation loop
