@@ -64,10 +64,7 @@ function drawInterval(start,end,alphabeta,context){
   context.textAlign = "center";
   context.fillStyle = "black";
   context.font = "bold 12px 'Courier New'";
-  var y = -10;
-  if(theta < 0){
-    y = -5;
-  }
+  var y = -5;
   context.fillText(intervalStr,0,y);
   context.restore();
 }
