@@ -27,12 +27,15 @@ var canvasHeight = 675;
 
 var numLeaves = 0;
 var root;
+var isEditing = true;
 
 function Node(){
   this.val = null;
   this.parent = null;
   this.x;
   this.y;
+  this.alpha = null;
+  this.beta = null;
   this.type;
   this.status = UNSEARCHED;
   this.children = new Array();
@@ -41,6 +44,52 @@ function Node(){
   this.sprout = addChild;
   this.die = killSelf;
 }
+
+function drawInterval(start,end,context){
+  if(start.alpha == null){
+    //not an alpha-beta node
+    return;
+  }
+  var theta;
+  //now, we do casework to find the angle
+  var dx = start.x - end.x;
+  var dy = start.y - end.y;//ig this should always be levelSpace but nice for generality
+  if(dx == 0){
+    theta = -Math.PI/2;
+  }
+  else{
+    theta = Math.atan(dy / dx);
+  }
+
+
+
+  var intervalStr = "(" + alphabetaToString(start.alpha) + ", " + alphabetaToString(start.beta) + ")";
+  var newx = (start.x + end.x)/2;
+  var newy = (start.y + end.y)/2;
+  context.save();
+  context.translate(newx,newy);
+  context.rotate(theta);
+  context.textAlign = "center";
+  context.fillStyle = "black";
+  context.font = "bold 12px 'Courier New'";
+  var y = -10;
+  if(theta < 0){
+    y = -5;
+  }
+  context.fillText(intervalStr,0,y);
+  context.restore();
+}
+
+function alphabetaToString(endpt){
+  if(endpt == Number.NEGATIVE_INFINITY){
+    return "-∞";
+  }
+  if(endpt == Number.POSITIVE_INFINITY){
+    return "∞";
+  }
+  return ""+endpt;
+}
+
 
 function killSelf(i){
   numLeaves -= countLeaves(this);
@@ -146,6 +195,7 @@ function drawEdge(start,end,context){
   context.closePath();
   context.lineWidth = 1;
   context.stroke();
+  drawInterval(start,end,context);
 }
 
 function drawAllNodes(rootNode,canvasID){
