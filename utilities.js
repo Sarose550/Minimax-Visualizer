@@ -58,14 +58,17 @@ function initKey(){
 }
 
 function drawEx1(){
+  isEditing = true;
   drawTreeCode('(((((3)(17))((2)(12)))(((15))((25)(0))))((((2)(5))((3)))(((2)(14)))))');
 }
 
 function drawEx2(){
+  isEditing = true;
   drawTreeCode('((((4)(5))((1))((2)(-3)))(((4)(0))((2)(-2))))');
 }
 
 function drawEx3(){
+  isEditing = true;
   drawTreeCode('(((((5)(6))((7)(4)(5)))(((3))))((6)(((7))))((((5)))(((9)(8))((6)))))');
 }
 
@@ -79,7 +82,8 @@ function initRoot(){
   document.getElementById("drawing").height = canvasHeight;
   root.draw("drawing");
   numLeaves++;
-  document.getElementById("drawing").addEventListener('mousedown', mouseClick, false);
+  isEditing = true;
+  document.getElementById("drawing").addEventListener('mousedown', (e) => {if(isEditing){mouseClick(e);}}, false);
 }
 
 function copyTree(){
@@ -122,6 +126,7 @@ function loadTreeCode(){
   if (treeStr == null) {
     return;
   }
+  isEditing = true;
   hideButtons();
   drawTreeCode(treeStr);
 }
@@ -211,11 +216,12 @@ function loadTreeCodeHelper(treeStr,level){
 
 function resizeHeight(){
   var c = document.getElementById("drawing");
-  c.height += 100;
-  canvasHeight += 100;
+  c.height += levelSpace;
+  canvasHeight += levelSpace;
 }
 
 function resetTree(){
+  isEditing = true;
   if(!isTree(root)){
     return;
   }
