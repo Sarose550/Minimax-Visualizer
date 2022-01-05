@@ -129,18 +129,20 @@ function initRoot(){
   isEditing = true;
   document.getElementById("drawing").addEventListener('mousedown', (e) => {if(isEditing){mouseClick(e);};}, false);
   document.addEventListener('keydown', function(e) {
-    if (e.defaultPrevented) {
-      return;
-   }
-    switch (e.keyCode) {
-        case 37:
-          showPrev();
-          break;
-        case 39:
-          showNext();
-          break;
+    if(paused){
+      if (e.defaultPrevented) {
+        return;
+     }
+      switch (e.keyCode) {
+          case 37:
+            showPrev();
+            break;
+          case 39:
+            showNext();
+            break;
+      }
+      e.preventDefault();
     }
-    e.preventDefault();
 }, true);
 }
 
