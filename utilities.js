@@ -126,7 +126,7 @@ function initRoot(){
   root.draw("drawing");
   numLeaves++;
   isEditing = true;
-  document.getElementById("drawing").addEventListener('mousedown', (e) => {if(isEditing){mouseClick(e);}}, false);
+  document.getElementById("drawing").addEventListener('mousedown', (e) => {if(isEditing){mouseClick(e);} else{$(nodeOptions).hide()}}, false);
   document.addEventListener('keydown', function(e) {
     if (e.defaultPrevented) {
       return;
