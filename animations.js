@@ -1,6 +1,5 @@
 var steps;
 var speed = 1;//the user will be able to speed it up or slow it down, 0.25x to 4.0x
-var frameTime = 1500/speed;
 var paused = true;
 
 function initSteps(){
@@ -86,6 +85,7 @@ function showLast(){
 
 function showNext(){
   if(steps.selectedFrameidx == steps.frames.length-1){
+    paused = true;
     return;
   }
   steps.selectNext();
@@ -271,12 +271,21 @@ function animate(){
   if(paused || steps.selectedFrameidx == steps.frames.length){
     $("#button2").text("Play");
     enableNavbar();
+    enableButton(1);
     return;
   }
+  setSpeed(parseFloat(document.getElementById("speed").options[document.getElementById("speed").selectedIndex].value));
   showNext();
   disableButton(1);
   // request another animation loop
+  var frameTime = 1500/speed;
   setTimeout(() => {
     requestAnimationFrame(animate);
   }, frameTime);
+}
+
+
+
+function setSpeed(rate){
+  speed = rate;
 }

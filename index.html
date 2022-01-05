@@ -83,15 +83,27 @@
           <a class="dropdown-item" href="#" onclick="compileAlphaBeta();">Alpha-Beta Pruning</a>
     </li>
   </ul>
+  <span class="navbar-text" id="speedLabel" style="display: none;">
+    Speed:&nbsp;
+  </span>
   <ul class="navbar-nav navbar-right mr-auto">
+    <span id="detector">
+    <select name="speed" id="speed" style="padding: 3px; margin: 10px; display: none;">
+        <option value="0.25">0.25x</option>
+        <option value="0.5">0.5x</option>
+        <option value="0.75">0.75x</option>
+        <option value="1.00" selected>Normal</option>
+        <option value="1.50">1.5x</option>
+        <option value="2.00">2x</option>
+        <option value="4.00">4x</option>
+    </select>
+  </span>
     <button class="btn btn-success navbar-btn-right mr-1" id="button0" style="display: none;" onclick="showFirst();" disabled> << </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button1" style="display: none;" onclick="showPrev();" disabled> < </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button2" style="display: none;" onclick="playBtnClick();"> Play </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button3" style="display: none;" onclick="showNext();"> > </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button4" style="display: none;" onclick="showLast();"> >> </button>
   </ul>
-
-  </div>
 </nav>
 
 <table class="table table-bordered">

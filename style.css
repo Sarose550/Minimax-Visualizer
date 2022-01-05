@@ -16,6 +16,10 @@ table td {
    text-align: center;
 }
 
+select option{
+  text-align: center;
+}
+
 tr {
    line-height: 3px;
    min-height: 3px;

@@ -31,12 +31,17 @@ function hideButtons() {
     //console.log("button"+i);
     document.getElementById("button" + i).style.display = "none";
   }
+  document.getElementById("speed").style.display = "none";
+  document.getElementById("speedLabel").style.display = "none";
 }
+
 function showButtons() {
   for(let i = 0; i < 5; i++){
     //console.log("button"+i);
     document.getElementById("button" + i).style.display = "block";
   }
+  document.getElementById("speed").style.display = "block";
+  document.getElementById("speedLabel").style.display = "block";
 }
 
 function disableButton(){
