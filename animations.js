@@ -90,6 +90,7 @@ function compileMinimax(){
     alert("Must assign values to all leaf nodes first.");
     return;
   }
+  isEditing = false;
   showButtons();
   disableButton(0,1);
   enableButton(3,4);
