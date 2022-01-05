@@ -80,13 +80,13 @@
       </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
           <a class="dropdown-item" href="#" onclick="compileMinimax();">Minimax</a>
-          <a class="dropdown-item" href="#" onclick="showButtons()">Alpha-Beta Pruning</a>
+          <a class="dropdown-item" href="#" onclick="compileAlphaBeta();">Alpha-Beta Pruning</a>
     </li>
   </ul>
   <ul class="navbar-nav navbar-right mr-auto">
     <button class="btn btn-success navbar-btn-right mr-1" id="button0" style="display: none;" onclick="showFirst();" disabled> << </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button1" style="display: none;" onclick="showPrev();" disabled> < </button>
-    <button class="btn btn-success navbar-btn-right mr-1" id="button2" style="display: none;"> Play </button>
+    <button class="btn btn-success navbar-btn-right mr-1" id="button2" style="display: none;" onclick="playBtnClick();"> Play </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button3" style="display: none;" onclick="showNext();"> > </button>
     <button class="btn btn-success navbar-btn-right mr-1" id="button4" style="display: none;" onclick="showLast();"> >> </button>
   </ul>
@@ -114,17 +114,17 @@
             </tr>
           </thead>
           <tbody>
-            <tr id="minnierow">
-              <th scope="row">Minnie</th>
-              <td id="minnierow0">Ignore</td>
-              <td id="minnierow1">Update α</td>
-              <td id="minnierow2">Prune</td>
-            </tr>
             <tr id="maxierow">
               <th scope="row">Maxie</th>
-              <td id="maxierow0">Prune</td>
-              <td id="maxierow1">Update β</td>
-              <td id="maxierow2">Ignore</td>
+              <td id="0,0">Ignore</td>
+              <td id="0,1">Update α</td>
+              <td id="0,2">Prune</td>
+            </tr>
+            <tr id="minnierow">
+              <th scope="row">Minnie</th>
+              <td id="1,0">Prune</td>
+              <td id="1,1">Update β</td>
+              <td id="1,2">Ignore</td>
             </tr>
           </tbody>
         </table>

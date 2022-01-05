@@ -1,5 +1,31 @@
 const onclicks = ["showFirst();","showPrev();","","showNext();","showLast();"]
 
+//const onclicks1 = ["hideButtons();resetTree();", "hideButtons();initRoot();"]
+//const onclicks2 = ["hideButtons();drawEx1();", "hideButtons();drawEx2();", "hideButtons();drawEx3();", "loadTreeCode();", "copyTree();"]
+
+function highlightCell(i,j){
+  for(var x = 0; x < 2; x++){
+    for(var y = 0; y < 3; y++){
+      var clearedCell = document.getElementById(x + "," + y);
+      clearedCell.style.backgroundColor = "";
+      clearedCell.style.border = "";
+    }
+  }
+  var cell = document.getElementById(i + "," + j);
+  cell.style.backgroundColor = "yellow";
+  cell.style.border = "solid 3px red";
+}
+
+function unhighlightCells(){
+  for(var x = 0; x < 2; x++){
+    for(var y = 0; y < 3; y++){
+      var clearedCell = document.getElementById(x + "," + y);
+      clearedCell.style.backgroundColor = "";
+      clearedCell.style.border = "";
+    }
+  }
+}
+
 function hideButtons() {
   for(let i = 0; i < 5; i++){
     //console.log("button"+i);
@@ -25,6 +51,18 @@ function enableButton(){
     $("#button"+arguments[i]).removeAttr("disabled");
     $("#button"+arguments[i]).attr("onclick",onclicks[arguments[i]]);
   }
+}
+
+function enableNavbar(){
+  $("#navbarDropdown1").show();
+  $("#navbarDropdown2").show();
+  $("#navbarDropdown3").show();
+}
+
+function disableNavbar(){
+  $("#navbarDropdown1").hide();
+  $("#navbarDropdown2").hide();
+  $("#navbarDropdown3").hide();
 }
 
 function miniEx(canvasID){
@@ -84,6 +122,20 @@ function initRoot(){
   numLeaves++;
   isEditing = true;
   document.getElementById("drawing").addEventListener('mousedown', (e) => {if(isEditing){mouseClick(e);}}, false);
+  document.addEventListener('keydown', function(e) {
+    if (e.defaultPrevented) {
+      return;
+   }
+    switch (e.keyCode) {
+        case 37:
+          showPrev();
+          break;
+        case 39:
+          showNext();
+          break;
+    }
+    e.preventDefault();
+}, true);
 }
 
 function copyTree(){
@@ -210,6 +262,9 @@ function loadTreeCodeHelper(treeStr,level){
     candidate.parent = tree;
     totalLeaves += candidateFeedback[1];
     max_y = Math.max(max_y,candidateFeedback[2]);
+  }
+  for(var i = 0; i < tree.children.length; i++){
+    tree.alphabetas.push(null);
   }
   return [tree,totalLeaves,max_y];
 }

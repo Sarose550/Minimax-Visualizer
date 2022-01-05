@@ -1,9 +1,3 @@
-//TODO:
-//Add the drawing methods required for minimax / alpha-beta pruning
-//-add alpha and beta attributes, drawing intervals on the edges, pruning edges, highlighting
-//Add the algorithms and animations
-
-
 //the three types of nodes
 const MINNIE = 0;
 const MAXIE = 1;
@@ -18,7 +12,6 @@ const PRUNED = 4;
 const DISCARDED = 5;
 
 const levelSpace = 100;
-//const minSpacing;
 const canvasWidth = 1260;
 const nodeCircRadius = 20;
 const leafHeight = 30;
@@ -36,6 +29,7 @@ function Node(){
   this.y;
   this.alpha = null;
   this.beta = null;
+  this.alphabetas = [];
   this.type;
   this.status = UNSEARCHED;
   this.children = new Array();
@@ -45,9 +39,9 @@ function Node(){
   this.die = killSelf;
 }
 
-function drawInterval(start,end,context){
-  if(start.alpha == null){
-    //not an alpha-beta node
+function drawInterval(start,end,alphabeta,context){
+  if(alphabeta == null){
+    //not an alpha-beta node, or the edge has been discarded, or it hasn't been searched yet
     return;
   }
   var theta;
@@ -61,9 +55,7 @@ function drawInterval(start,end,context){
     theta = Math.atan(dy / dx);
   }
 
-
-
-  var intervalStr = "(" + alphabetaToString(start.alpha) + ", " + alphabetaToString(start.beta) + ")";
+  var intervalStr = "(" + alphabetaToString(alphabeta[0]) + ", " + alphabetaToString(alphabeta[1]) + ")";
   var newx = (start.x + end.x)/2;
   var newy = (start.y + end.y)/2;
   context.save();
@@ -77,6 +69,43 @@ function drawInterval(start,end,context){
     y = -5;
   }
   context.fillText(intervalStr,0,y);
+  context.restore();
+}
+
+function pruneEdge(start,end,context){
+  var theta;
+  var dx = start.x - end.x;
+  var dy = start.y - end.y;
+  if(dx == 0){
+    theta = -Math.PI/2;
+  }
+  else{
+    theta = Math.atan(dy / dx);
+  }
+  var newx = (start.x + end.x)/2;
+  var newy = (start.y + end.y)/2;
+  context.save();
+  context.translate(newx,newy);
+  context.rotate(theta);
+  context.strokeStyle = "white";
+  context.lineWidth = 3;
+  context.beginPath();
+  context.moveTo(-5,0);
+  context.lineTo(5,0);
+  context.closePath();
+  context.stroke();
+  context.strokeStyle = "grey";
+  context.lineWidth = 1;
+  context.beginPath();
+  context.moveTo(-5,-5);
+  context.lineTo(-5,5);
+  context.closePath();
+  context.stroke();
+  context.beginPath();
+  context.moveTo(5,-5);
+  context.lineTo(5,5);
+  context.closePath();
+  context.stroke();
   context.restore();
 }
 
@@ -94,6 +123,7 @@ function alphabetaToString(endpt){
 function killSelf(i){
   numLeaves -= countLeaves(this);
   this.parent.children.splice(i,1);
+  this.parent.alphabetas.splice(i,1);
   if(this.parent.children.length == 0){
     this.parent.type = LEAF;
     numLeaves++;
@@ -120,7 +150,7 @@ function cloneTree(rootNode){
   var attributes = Object.keys(rootNode);
   for(var i = 0; i < attributes.length; i++){
     var attr = attributes[i];
-    if(attr != "children" && attr != "parent"){
+    if(attr != "children" && attr != "parent" && attr != "alphabetas"){
       newTree[attr] = rootNode[attr];
     }
   }
@@ -128,6 +158,9 @@ function cloneTree(rootNode){
     var newChild = cloneTree(rootNode.children[i]);
     newChild.parent = newTree;
     newTree.children.push(newChild);
+  }
+  for(var i = 0; i < rootNode.alphabetas.length; i++){
+    newTree.alphabetas.push(rootNode.alphabetas[i]);
   }
   return newTree;
 }
@@ -173,18 +206,20 @@ function drawEdges(rootNode,canvasID){
   var ctx = c.getContext("2d");
   for(var i = 0; i < rootNode.children.length; i++){
     var curNode = rootNode.children[i];
-    drawEdge(rootNode,curNode,ctx);
+    drawEdge(rootNode,curNode,i,ctx);
     drawEdges(curNode,canvasID);
   }
 }
 
-function drawEdge(start,end,context){
-    //console.log(ctx.strokeStyle);
-  if(end.status == SEARCHED){
+function drawEdge(start,end,idx,context){
+  if(end.status == SEARCHED || end.status == PRUNED){
     context.strokeStyle = "blue";
   }
   else if((end.status == SEARCHING || end.status == BOLD) && start.status == SEARCHING){
     context.strokeStyle = "red";
+  }
+  else if(end.status == DISCARDED){
+    context.strokeStyle = "grey";
   }
   else{
     context.strokeStyle = "black";
@@ -195,7 +230,10 @@ function drawEdge(start,end,context){
   context.closePath();
   context.lineWidth = 1;
   context.stroke();
-  drawInterval(start,end,context);
+  drawInterval(start,end,start.alphabetas[idx],context);
+  if((start.status == PRUNED || start.status == BOLD || start.status == SEARCHED) && end.status == DISCARDED){
+    pruneEdge(start,end,context);
+  }
 }
 
 function drawAllNodes(rootNode,canvasID){
@@ -230,6 +268,7 @@ function addChild(){
     numLeaves++;
   }
   this.children.push(newChild);
+  this.alphabetas.push(null);
   positionNodes(root,numLeaves);
   drawAll("drawing");
 }
@@ -264,6 +303,10 @@ function drawNode(canvasID,outlineColor="black"){
       ctx.lineWidth = 2;
       ctx.strokeStyle = "blue";
       break;
+    case PRUNED:
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "blue";
+      break;
     default:
       ctx.lineWidth = 1;
       ctx.strokeStyle = outlineColor;
@@ -271,8 +314,12 @@ function drawNode(canvasID,outlineColor="black"){
   switch (this.type){
     case MAXIE:
       var r = nodeCircRadius;
-
-      ctx.fillStyle = "#23E965";
+      if(this.status == DISCARDED){
+        ctx.fillStyle = "#c1f1c3";
+      }
+      else{
+        ctx.fillStyle = "#23E965";
+      }
       ctx.beginPath();
       ctx.moveTo(this.x-leafRatio*Math.sqrt(3)*r/2, this.y+r/2);
       ctx.lineTo(this.x+leafRatio*Math.sqrt(3)*r/2, this.y+r/2);
@@ -284,7 +331,12 @@ function drawNode(canvasID,outlineColor="black"){
       break;
     case MINNIE:
       var r = nodeCircRadius;
-      ctx.fillStyle = "#E98D23";
+      if(this.status == DISCARDED){
+        ctx.fillStyle = "#f7d4ab";
+      }
+      else{
+        ctx.fillStyle = "#E98D23";
+      }
       ctx.beginPath();
       ctx.moveTo(this.x-leafRatio*Math.sqrt(3)*r/2, this.y-r/2);
       ctx.lineTo(this.x+leafRatio*Math.sqrt(3)*r/2, this.y-r/2);
@@ -300,14 +352,31 @@ function drawNode(canvasID,outlineColor="black"){
       ctx.rect(this.x-leafRatio*leafHeight/2,this.y-leafHeight/2,leafRatio*leafHeight,leafHeight);
       ctx.closePath();
       ctx.stroke();
+      if(this.status == DISCARDED){
+        ctx.fillStyle = "#f3f3f3";
+      }
       ctx.fillStyle = "white";
       ctx.fill();
       break;
   }
   if(this.val != null){
-    var valueStr = "" + this.val;
-    ctx.fillStyle = "black";
+    var startingStr = "";
+    if(this.status == PRUNED){
+      if(this.type == MAXIE){
+        startingStr = "≥";
+      }
+      if(this.type == MINNIE){
+        startingStr = "≤";
+      }
+    }
+    if(this.status == DISCARDED){
+      ctx.fillStyle = "gray";
+    }
+    else{
+      ctx.fillStyle = "black";
+    }
   	ctx.font = "bold 13px 'Courier New'";
+    var valueStr = startingStr + this.val;
     letterwidth = 8;
     valueSize = letterwidth * valueStr.length;
     ctx.fillText(valueStr, this.x - valueSize/2, this.y + letterwidth/2);
