@@ -24,7 +24,7 @@ This page serves as a tool to help students visualize, and better understand the
   - A node outlined in black indicates that it has not been searched.
   - A node highlighted in red indicates that it is being searched / updated.
   - A node outlined in red indicates that it is being evaluated, and awaits an update from one of its subtrees.
-  - A node outlined in blue indicates that it has already been searched.
+  - A node outlined in blue indicates that it has already been searched, and it will contain its assigned value.
 - **Edges:**
   - A black edge indicates that it has not been traversed.
   - A red edge indicates that it has been traversed down, but not up.
