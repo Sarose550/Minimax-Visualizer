@@ -1,5 +1,5 @@
 # [Minimax Visualizer](https://sarose550.github.io/Minimax-Visualizer/)
-Minimax, and in particular alpha-beta pruning, can be a very confusing topic for students.
+Minimax, and in particular alpha-beta pruning, can be very confusing topics for students.
 
 This page serves as a tool to help students visualize, and better understand these algorithms.
 
