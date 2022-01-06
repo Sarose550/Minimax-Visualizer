@@ -58,6 +58,7 @@ function nextFrame(){
   this.selectedFrame = this.frames[this.selectedFrameidx];
   if(this.selectedFrameidx == this.frames.length-1){
     disableButton(3,4);
+    paused = true;
   }
   enableButton(0,1);
 }
@@ -84,13 +85,8 @@ function showLast(){
 }
 
 function showNext(){
-  if(steps.selectedFrameidx == steps.frames.length-1){
-    paused = true;
-    return;
-  }
   steps.selectNext();
   steps.loadFrame();
-  paused = true;
 }
 
 function showPrev(){
@@ -260,12 +256,6 @@ function playBtnClick(){
     animate();
   }
   else{
-    if(steps.selectedFrameidx == steps.frames.length - 2){
-      paused = true;
-      disableButton(3);
-      showNext();
-      return;
-    }
     paused = true;
     enableNavbar();
     enableButton(1);

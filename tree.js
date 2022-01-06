@@ -54,7 +54,7 @@ function drawInterval(start,end,alphabeta,context){
   else{
     theta = Math.atan(dy / dx);
   }
-
+  var y = -5;
   var intervalStr = "(" + alphabetaToString(alphabeta[0]) + ", " + alphabetaToString(alphabeta[1]) + ")";
   var newx = (start.x + end.x)/2;
   var newy = (start.y + end.y)/2;
@@ -62,9 +62,15 @@ function drawInterval(start,end,alphabeta,context){
   context.translate(newx,newy);
   context.rotate(theta);
   context.textAlign = "center";
-  context.fillStyle = "black";
-  context.font = "bold 12px 'Courier New'";
-  var y = -5;
+  if(end.status == BOLD && end.val != null){
+    context.font = "bold 16px 'Courier New'";
+    context.fillStyle = "blue";
+    y = -9;
+  }
+  else{
+    context.font = "bold 12px 'Courier New'";
+    context.fillStyle = "black";
+  }
   context.fillText(intervalStr,0,y);
   context.restore();
 }
