@@ -64,7 +64,7 @@ function drawInterval(start,end,alphabeta,context){
   context.textAlign = "center";
   if(end.status == BOLD && end.val != null){
     if(dx == 0){
-      context.font = "bold 18px 'Courier New'"
+      context.font = "bold 19px 'Courier New'"
     }
     else{
       context.font = "bold 20px 'Courier New'";
@@ -73,7 +73,7 @@ function drawInterval(start,end,alphabeta,context){
     y = -11;
   }
   else if(dx == 0){
-    context.font = "bold 14px 'Courier New'";
+    context.font = "bold 15px 'Courier New'";
     context.fillStyle = "black";
   }
   else{
