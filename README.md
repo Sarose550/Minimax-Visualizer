@@ -56,7 +56,7 @@ The explicit game tree datatype is defined as follows:
 ```Copy Explicit```**:**
 - The ```Copy Explicit``` button under ```Options``` copies to your clipboard the current tree, represented as a ```gameTree``` in SML text.
 - **Use For Testing:**
-<p>If you want to run your <pre>AlphaBeta.fun</pre> implementation on a tree, do the following:</p>
+If you want to run your ```AlphaBeta.fun``` implementation on a tree, do the following:
   1. Go to ```ABTests.sml```. Navigate to the definition of ```structure ABTests```.
   Copy and paste the following, and fill in the information where indicated (here, name can be anything you would like to name the test case so long as it is a valid variable name):
   <pre>
