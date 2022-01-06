@@ -17,7 +17,8 @@ This page serves as a tool to help students visualize, and better understand the
   - Otherwise, select ```Reset``` to return to the editing interface.
 
 ## Features
-**Animations**<br>
+**Animations**
+
 - **Nodes:**
   - See the key in the upper-right to learn the symbolic representations for nodes.
   - A node outlined in black indicates that it has not been searched.
@@ -37,7 +38,8 @@ This page serves as a tool to help students visualize, and better understand the
   - A gray edge indicates that it has been discarded as a result of pruning.
   - A severed gray edge indicates that its lower node has been pruned, and the corresponding subtree discarded.
 
-**Text Representations of Trees:**<br>
+**Text Representations of Trees:**
+
 The string representations for trees are unique, and can be defined recursively as follows (here, a tree is regarded as its root node):
 - A leaf node with value *x* is represented by ```"(x)"```.
 - A node whose children (from left to right) have strings *T1*, *T2*, ..., *Tn* is represented by ```"((T1)(T2)...(Tn))"```.
