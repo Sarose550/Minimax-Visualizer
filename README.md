@@ -78,7 +78,7 @@ If you want to run your ```AlphaBeta.fun``` implementation on a tree, do the fol
   2. Go to the page, copy the SML text to your clipboard, and paste it where it says ```(*your tree here*)```.
   
   3. In the signature for ```ABTests```, add the following line:
-  <pre>val test<name>   : unit -> ExplicitGame.Move.t</pre>
+  <pre>val test*name* : unit -> ExplicitGame.Move.t</pre>
 These can be used for testing as follows:
 <pre>
 > ./ smlnj -m sources.cm
