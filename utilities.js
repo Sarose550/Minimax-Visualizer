@@ -60,12 +60,14 @@ function enableNavbar(){
   $("#navbarDropdown1").show();
   $("#navbarDropdown2").show();
   $("#navbarDropdown3").show();
+  $("#navbarDropdown4").show();
 }
 
 function disableNavbar(){
   $("#navbarDropdown1").hide();
   $("#navbarDropdown2").hide();
   $("#navbarDropdown3").hide();
+  $("#navbarDropdown4").show();
 }
 
 function miniEx(canvasID){
