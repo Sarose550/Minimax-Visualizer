@@ -14,7 +14,7 @@ This page serves as a tool to help students visualize, and better understand the
   - Use the two outer buttons to jump to the start or end.
 - Once you're finished animating, go to ```Edit```.
   - Select ```Clear Parents``` if you wish to edit the tree. This will clear any changes made by the animation, and display the tree in its original form.
-  - Otherwise, select ```Reset``` to return to the editing interface.
+  - Otherwise, select ```Reset``` to return to the default editing interface.
 
 ## Features
 **Animations**
