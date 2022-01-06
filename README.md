@@ -53,9 +53,9 @@ The explicit game tree datatype is defined as follows:
       = Outcome of string * Player.t
       | Esti of string * int
       | Node of string * gameTree list</pre>
-```Copy Explicit```**:**
+**Copy Explicit:**
 - The ```Copy Explicit``` button under ```Options``` copies to your clipboard the current tree, represented as a ```gameTree``` in SML text.
-- **Use For Testing:**
+**Use For Testing:**
 If you want to run your ```AlphaBeta.fun``` implementation on a tree, do the following:
   1. Go to ```ABTests.sml```. Navigate to the definition of ```structure ABTests```.
   Copy and paste the following, and fill in the information where indicated (here, name can be anything you would like to name the test case so long as it is a valid variable name):
@@ -74,7 +74,13 @@ If you want to run your ```AlphaBeta.fun``` implementation on a tree, do the fol
   </pre>
   Here we define a leaf to have height 0, and the height of a tree is 1 more than the maximum height of its children.
   2. Go to the page, copy the SML text to your clipboard, and paste it where it says ```(*your tree here*)```.
-  3. In the signature for ```ABTests```,
+  3. In the signature for ```ABTests```, add the following line:
+  <pre>val test<name>   : unit -> ExplicitGame.Move.t</pre>
+These can be used for testing as follows:
+<pre>
+> ./ smlnj -m sources.cm
+- ABTests.test<name> ();
+</pre>
 ---
 Built with HTML, CSS, JavaScript.
 
