@@ -17,6 +17,25 @@ This page serves as a tool to help students visualize, and better understand the
   - Otherwise, select ```Reset``` to return to the editing interface.
 
 ## Features
+**Animations**<br>
+- **Nodes:**
+  - See the key in the upper-right to learn the symbolic representations for nodes.
+  - A node outlined in black indicates that it has not been searched.
+  - A node highlighted in red indicates that it is being searched / updated.
+  - A node outlined in red indicates that it is being evaluated, and awaits an update from one of its subtrees.
+  - A node outlined in blue indicates that it has already been searched.
+- **Edges:**
+  - A black edge indicates that it has not been traversed.
+  - A red edge indicates that it has been traversed down, but not up.
+  - A blue edge indicates that it has been traversed both ways.
+- **Alpha-Beta Pruning**
+  - When an edge is traversed, it is labeled with the *(α, β)*-interval it is originally passed.
+  - An interval highlighted in blue indicates that it is being compared to a value.
+  - When a node recieves an update, its action is indicated by the highlighted cell of the table in the upper-left.
+  - A node with gray font or a light interior indicates that it has been discarded as a result of pruning.
+  - A gray edge indicates that it has been discarded as a result of pruning.
+  - A severed gray edge indicates that its lower node has been pruned, and the corresponding subtree discarded.
+
 **Text Representations of Trees:**<br>
 The string representations for trees are unique, and can be defined recursively as follows (here, a tree is regarded as its root node):
 - A leaf node with value *x* is represented by ```"(x)"```.
