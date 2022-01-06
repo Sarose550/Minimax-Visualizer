@@ -42,7 +42,7 @@ This page serves as a tool to help students visualize, and better understand the
 
 The string representations for trees are unique, and can be defined recursively as follows (here, a tree is regarded as its root node):
 - A leaf node with value *v* is represented by ```"(v)"```.
-- A node whose children (from left to right) have strings *S[1]*, *S[2]*, ..., *S[n]* is represented by ```"(S[1]S[2]...S[n])"```.
+- A node whose children (from left to right) have strings S<sub>1</sub>, S<sub>2</sub>, ..., S<sub>n</sub> is represented by ```"(```S<sub>1</sub>S<sub>2</sub>...S<sub>n</sub>```)"```.
 ---
 Built with HTML, CSS, JavaScript.
 
