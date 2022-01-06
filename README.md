@@ -82,7 +82,7 @@ If you want to run your ```AlphaBeta.fun``` implementation on a tree, do the fol
 These can be used for testing as follows:
 <pre>
 > ./ smlnj -m sources.cm
-- ABTests.test<name> ();
+- ABTests.test*name* ();
 </pre>
 ---
 Built with HTML, CSS, JavaScript.
