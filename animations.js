@@ -261,17 +261,23 @@ function playBtnClick(){
   else{
     paused = true;
     enableNavbar();
-    enableButton(1,3);
+    enableButton(1);
+    if(steps.selectedFrameidx != steps.frames.length - 1){
+      enableButton(3);
+    }
     //rename the button
     $("#button2").text("Play");
   }
 }
 
 function animate(){
-  if(paused || steps.selectedFrameidx == steps.frames.length){
+  if(paused || steps.selectedFrameidx == steps.frames.length - 1){
     $("#button2").text("Play");
     enableNavbar();
     enableButton(1);
+    if(steps.selectedFrameidx == steps.frames.length - 1){
+      disableButton(3);
+    }
     return;
   }
   setSpeed(parseFloat(document.getElementById("speed").options[document.getElementById("speed").selectedIndex].value));
