@@ -28,7 +28,7 @@ This page serves as a tool to help students visualize, and better understand the
   - A black edge indicates that it has not been traversed.
   - A red edge indicates that it has been traversed down, but not up.
   - A blue edge indicates that it has been traversed both ways.
-- **Alpha-Beta Pruning**
+- **Alpha-Beta Pruning:**
   - When an edge is traversed, it is labeled with the *(α, β)*-interval it is originally passed.
   - An interval highlighted in blue indicates that it is being compared to a value.
   - When a node recieves an update, its action is indicated by the highlighted cell of the table in the upper-left.
