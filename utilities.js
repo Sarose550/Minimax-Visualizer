@@ -163,12 +163,34 @@ function copyTree(){
   alert("Tree copied to clipboard.");
 }
 
+function copyExplicitTree(){
+  if(!isGameTree(root)){
+    alert("Must assign values to all leaf nodes first. Additionally, we require that all values are integers.");
+    return;
+  }
+  treeStr = toExplicitTree(root);
+  navigator.clipboard.writeText(treeStr);
+  alert("Explicit game tree copied to clipboard.");
+}
+
 function isTree(node){
   if(node.type == LEAF){
     return node.val != null;
   }
   for(var i = 0; i < node.children.length; i++){
     if(!isTree(node.children[i])){
+      return false;
+    }
+  }
+  return true;
+}
+
+function isGameTree(node){
+  if(node.type == LEAF){
+    return node.val != null && Number.isInteger(node.val);
+  }
+  for(var i = 0; i < node.children.length; i++){
+    if(!isGameTree(node.children[i])){
       return false;
     }
   }
@@ -185,6 +207,21 @@ function toTreeCode(node){
   }
   treeStr += ")";
   return treeStr
+}
+
+function toExplicitTree(node,str="a"){
+  if(node.type == LEAF){
+    return 'Esti ("' + str + '", ' + node.val + ')';
+  }
+  var treeStr = 'Node ("' + str + '", [';
+  for(var i = 0; i < node.children.length; i++){
+    if(i != 0){
+      treeStr += ", ";
+    }
+    treeStr += toExplicitTree(node.children[i], str + ">" + i);
+  }
+  treeStr += "])";
+  return treeStr;
 }
 
 function loadTreeCode(){
