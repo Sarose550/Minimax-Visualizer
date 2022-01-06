@@ -38,7 +38,7 @@ This page serves as a tool to help students visualize, and better understand the
   - A gray edge indicates that it has been discarded as a result of pruning.
   - A severed gray edge indicates that its lower node has been pruned, and the corresponding subtree discarded.
 
-**Text Representations of Trees:**
+**Text Representations of Trees**
 
 The string representations for trees are unique, and can be defined recursively as follows (here, a tree is regarded as its root node):
 - A leaf node with value *x* is represented by ```"(x)"```.
