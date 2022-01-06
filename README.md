@@ -17,7 +17,7 @@ This page serves as a tool to help students visualize, and better understand the
   - Otherwise, select ```Reset``` to return to the editing interface.
 
 ## Features
-**Text Representations of Trees:**
+**Text Representations of Trees:**<br>
 The string representations for trees are unique, and can be defined recursively as follows (here, a tree is regarded as its root node):
 - A leaf node with value *x* is represented by ```"(x)"```.
 - A node whose children (from left to right) have strings *T1*, *T2*, ..., *Tn* is represented by ```"((T1)(T2)...(Tn))"```.
