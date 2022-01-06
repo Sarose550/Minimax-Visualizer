@@ -33,7 +33,7 @@ This page serves as a tool to help students visualize, and better understand the
   - When an edge is traversed, it is labeled with the *(α, β)*-interval it is originally passed.
   - An interval highlighted in blue indicates that it is being compared to a value.
   - When a node recieves an update, its action is indicated by the highlighted cell of the table in the top-left corner.
-  - Once a node has pruned, its value is preceeded by "≥" if it's a Maxie node, and "≤" if it's a Minnie node.
+  - Once a node has pruned, its value is preceeded by "≥" if it's a Maxie node, and "≤" if it's a Minnie node. This indicates a bound on the node's value, were a full minimax search to be performed.
   - A node with gray font or a light interior indicates that it has been discarded as a result of pruning.
   - A gray edge indicates that it has been discarded as a result of pruning.
   - A severed gray edge indicates that its lower node has been pruned, and the corresponding subtree discarded.
