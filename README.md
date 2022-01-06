@@ -16,6 +16,11 @@ This page serves as a tool to help students visualize, and better understand the
   - Select ```Clear Parents``` if you wish to edit the tree. This will clear any changes made by the animation, and display the tree in its original form.
   - Otherwise, select ```Reset``` to return to the editing interface.
 
+## Features
+**Text Representations of Trees:**
+The string representations for trees are unique, and can be defined recursively as follows (here, a tree is regarded as its root node):
+- A leaf node with value *x* is represented by ```(x)```.
+- A node with children *T<sub>1</sub>*
 
 Built with HTML, CSS, JavaScript.
 
