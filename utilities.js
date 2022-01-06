@@ -134,6 +134,11 @@ function initRoot(){
         return;
      }
       switch (e.keyCode) {
+          case 32:
+            if(!isEditing){
+              playBtnClick();
+            }
+            break;
           case 37:
             showPrev();
             break;

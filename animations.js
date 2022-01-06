@@ -268,19 +268,17 @@ function playBtnClick(){
 }
 
 function animate(){
-  if(paused || steps.selectedFrameidx == steps.frames.length - 2){
+  showNext();
+  if(paused || steps.selectedFrameidx == steps.frames.length - 1){
     $("#button2").text("Play");
     enableNavbar();
     enableButton(1);
-    paused = false;
-    if(steps.selectedFrameidx == steps.frames.length - 2){
+    if(steps.selectedFrameidx == steps.frames.length - 1){
       disableButton(3);
-      showNext();
     }
     return;
   }
   setSpeed(parseFloat(document.getElementById("speed").options[document.getElementById("speed").selectedIndex].value));
-  showNext();
   disableButton(1);
   // request another animation loop
   var frameTime = 1500/speed;
