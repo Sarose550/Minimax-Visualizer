@@ -11,7 +11,7 @@ const SEARCHED = 3;
 const PRUNED = 4;
 const DISCARDED = 5;
 
-const levelSpace = 130;
+const levelSpace = 120;
 const canvasWidth = 1260;
 const nodeCircRadius = 20;
 const leafHeight = 30;
