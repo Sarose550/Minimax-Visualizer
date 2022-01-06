@@ -11,7 +11,7 @@ const SEARCHED = 3;
 const PRUNED = 4;
 const DISCARDED = 5;
 
-const levelSpace = 100;
+const levelSpace = 130;
 const canvasWidth = 1260;
 const nodeCircRadius = 20;
 const leafHeight = 30;
@@ -54,7 +54,7 @@ function drawInterval(start,end,alphabeta,context){
   else{
     theta = Math.atan(dy / dx);
   }
-  var y = -9;
+  var y = -8;
   var intervalStr = "(" + alphabetaToString(alphabeta[0]) + ", " + alphabetaToString(alphabeta[1]) + ")";
   var newx = (start.x + end.x)/2;
   var newy = (start.y + end.y)/2;
@@ -63,12 +63,21 @@ function drawInterval(start,end,alphabeta,context){
   context.rotate(theta);
   context.textAlign = "center";
   if(end.status == BOLD && end.val != null){
-    context.font = "bold 20px 'Courier New'";
+    if(dx == 0){
+      context.font = "bold 16px 'Courier New'"
+    }
+    else{
+      context.font = "bold 18px 'Courier New'";
+    }
     context.fillStyle = "blue";
-    y = -11;
+    y = -10;
+  }
+  else if(dx == 0){
+    context.font = "bold 12px 'Courier New'";
+    context.fillStyle = "black";
   }
   else{
-    context.font = "bold 16px 'Courier New'";
+    context.font = "bold 14px 'Courier New'";
     context.fillStyle = "black";
   }
   context.fillText(intervalStr,0,y);
