@@ -68,9 +68,9 @@ If you want to run your ```AlphaBeta.fun``` implementation on a tree, do the fol
         val search_depth = (*height of your tree*)
       end
     )
-    val tree<name> = (*your tree here*)
+    val tree\<name\> = (*your tree here*)
   in
-    val test<name> = fn () => Test<name>.next_move (tree<name>,Player.Maxie,0)
+    val test\<name\> = fn () => Test\<name\>.next_move (tree\<name\>,Player.Maxie,0)
   end
   </pre>
   Here we define a leaf to have height 0, and the height of a tree is 1 more than the maximum height of its children.
