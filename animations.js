@@ -90,6 +90,7 @@ function showNext(){
   }
   steps.selectNext();
   steps.loadFrame();
+  paused = true;
 }
 
 function showPrev(){
@@ -249,7 +250,7 @@ function discardFrom(rootNode){
 }
 
 function playBtnClick(){
-  if(paused){
+  if(paused && steps.selectedFrameidx != steps.frames.length - 1){
     paused = false;
     //disable the dropdown buttons
     disableNavbar();
@@ -259,6 +260,12 @@ function playBtnClick(){
     animate();
   }
   else{
+    if(steps.selectedFrameidx == steps.frames.length - 2){
+      paused = true;
+      disableButton(3);
+      showNext();
+      return;
+    }
     paused = true;
     enableNavbar();
     enableButton(1);
@@ -271,12 +278,14 @@ function playBtnClick(){
 }
 
 function animate(){
-  if(paused || steps.selectedFrameidx == steps.frames.length - 1){
+  if(paused || steps.selectedFrameidx == steps.frames.length - 2){
     $("#button2").text("Play");
     enableNavbar();
     enableButton(1);
-    if(steps.selectedFrameidx == steps.frames.length - 1){
+    paused = false;
+    if(steps.selectedFrameidx == steps.frames.length - 2){
       disableButton(3);
+      showNext();
     }
     return;
   }
