@@ -480,15 +480,15 @@ function detectFromRoot(rootNode,mouse_x,mouse_y,idx=null){
   return [null,idx];
 }
 
-function isInMinnie(x,y,center_x,center_y) {
+function isInMaxie(x,y,center_x,center_y) {
   var radius = nodeCircRadius;
 	var dx = (x-center_x) / leafRatio;
   var dy = y-center_y;
   return (dy <= radius / 2) && ((Math.sqrt(3)/2) * dx - dy/2 <= radius / 2) && ((-1*Math.sqrt(3)/2) * dx - dy/2 <= radius / 2);
 }
 
-function isInMaxie(x,y,center_x,center_y){
-  return isInMinnie(x,2*center_y-y,center_x,center_y);
+function isInMinnie(x,y,center_x,center_y){
+  return isInMaxie(x,2*center_y-y,center_x,center_y);
 }
 
 function isInLeaf(x,y,center_x,center_y){

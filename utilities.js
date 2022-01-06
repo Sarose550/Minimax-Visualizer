@@ -137,7 +137,7 @@ function initRoot(){
      }
       switch (e.keyCode) {
           case 32:
-            if(!isEditing){
+            if(!isEditing || !paused){
               playBtnClick();
             }
             break;
