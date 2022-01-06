@@ -67,7 +67,7 @@ function disableNavbar(){
   $("#navbarDropdown1").hide();
   $("#navbarDropdown2").hide();
   $("#navbarDropdown3").hide();
-  $("#navbarDropdown4").show();
+  $("#navbarDropdown4").hide();
 }
 
 function miniEx(canvasID){
