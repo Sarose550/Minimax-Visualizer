@@ -54,7 +54,9 @@ function lastFrame(){
 }
 
 function nextFrame(){
-  this.selectedFrameidx++;
+  if(this.selectedFrameidx != this.frames.length - 1){
+    this.selectedFrameidx++;
+  }
   this.selectedFrame = this.frames[this.selectedFrameidx];
   if(this.selectedFrameidx == this.frames.length-1){
     disableButton(3,4);
@@ -64,7 +66,9 @@ function nextFrame(){
 }
 
 function prevFrame(){
-  this.selectedFrameidx--;
+  if(this.selectedFrameidx != 0){
+    this.selectedFrameidx--;
+  }
   this.selectedFrame = this.frames[this.selectedFrameidx];
   if(this.selectedFrameidx == 0){
     disableButton(0,1);
