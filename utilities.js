@@ -164,8 +164,8 @@ function copyTree(){
 }
 
 function copyExplicitTree(){
-  if(!isGameTree(root)){
-    alert("Must assign values to all leaf nodes first. Additionally, we require that all values are integers.");
+  if(!isTree(root)){
+    alert("Must assign values to all leaf nodes first.");
     return;
   }
   treeStr = toExplicitTree(root);
@@ -185,18 +185,6 @@ function isTree(node){
   return true;
 }
 
-function isGameTree(node){
-  if(node.type == LEAF){
-    return node.val != null && Number.isInteger(node.val);
-  }
-  for(var i = 0; i < node.children.length; i++){
-    if(!isGameTree(node.children[i])){
-      return false;
-    }
-  }
-  return true;
-}
-
 function toTreeCode(node){
   if(node.type == LEAF){
     return "(" + node.val + ")";
@@ -207,40 +195,6 @@ function toTreeCode(node){
   }
   treeStr += ")";
   return treeStr
-}
-
-function smlInt(x){
-  if(x >= 0){
-    return "" + x;
-  }
-  return "~" + (-x);
-}
-
-function parseSMLInt(x){
-  if(x.at(0) == "~"){
-    return -parseFloat(x.slice(1));
-  }
-  return parseFloat(x);
-}
-
-function isSMLNumber(str){
-  if(str == ""){
-    return false;
-  }
-  if(str.at(0) == "~"){
-    if(str.length == 1){
-      return false;
-    }
-    if(str.at(1) == "-"){
-      return false;
-    }
-    return !isNaN(Number.parseInt(str.slice(1)));
-  }
-  if(str.at(0) == "-"){
-
-    return false;
-  }
-  return !isNaN(Number.parseInt(str));
 }
 
 function toExplicitTree(node,str="a"){
@@ -283,320 +237,80 @@ function loadExplicitTree(){
     drawExplicitTreeCode(treeStr);
   }
   catch(e){
-    alert("Not a valid explicit game tree.");
+    alert(e.toString());
     return;
   }
 }
 
 function drawTreeCode(treeStr){
-  var treeFeedback = loadTreeCodeHelper(treeStr,0);
-  var tree = treeFeedback[0];
-  var newNumLeaves = treeFeedback[1];
-  var max_y = treeFeedback[2];
-  if(tree != null){
-    root.children = new Array();
-    root = tree;
-    numLeaves = newNumLeaves;
-    if(max_y > canvasHeight){
-      canvasHeight = max_y + levelSpace;
-      var c = document.getElementById("drawing");
-      c.height = canvasHeight;
+  try{
+    var treeFeedback = loadTreeCodeHelper(window.PARSERTREE.parse(treeStr),0);
+    var tree = treeFeedback[0];
+    var newNumLeaves = treeFeedback[1];
+    var max_y = treeFeedback[2];
+    if(tree != null){
+      root.children = new Array();
+      root = tree;
+      numLeaves = newNumLeaves;
+      if(max_y > canvasHeight){
+        canvasHeight = max_y + levelSpace;
+        var c = document.getElementById("drawing");
+        c.height = canvasHeight;
+      }
+      positionNodes(root,numLeaves);
+      drawAll("drawing");
     }
-    positionNodes(root,numLeaves);
-    drawAll("drawing");
   }
-  else{
-    alert("Not a valid tree.");
+  catch(e){
+    alert(e.toString());
   }
-}
-
-function removeUnquotedWhiteSpace(str){
-  var strArray = str.split("");
-  var s = removeUnquotedWhiteSpace1(strArray);
-  if(s == null){
-    return null;
-  }
-  return s.join("");
-}
-
-function removeUnquotedWhiteSpace1(strArray){
-  //0 indicates that it's not inside quotes
-  //1 indicates that it's inside single quotes
-  //2 indicates that it's inside double quotes
-  //if the quotes aren't matched up, this returns null.
-  var idx = 0;
-  var quoteMode = 0;
-  while(true){
-    switch(quoteMode){
-      case 0:
-        if(idx == strArray.length){
-          return strArray;
-        }
-        else if(strArray[idx] == "'"){
-          quoteMode = 1;
-        }
-        else if(strArray[idx] == '"'){
-          quoteMode = 2;
-        }
-        if(/\s/.test(strArray[idx])){
-          strArray[idx] = "";
-        }
-        break;
-
-      case 1:
-        if(idx == strArray.length){
-          return null;
-        }
-        if(strArray[idx] == "'"){
-          quoteMode = 0;
-        }
-        else{
-          quoteMode = 1;
-        }
-        break;
-
-      case 2:
-        if(idx == strArray.length){
-          return null;
-        }
-        if(strArray[idx] == '"'){
-          quoteMode = 0;
-        }
-        else{
-          quoteMode = 2;
-        }
-        break;
-    }
-    idx++;
-  }
-}
-
-function findStringLiteral(args){
-  if(args.length < 2){
-    return null;
-  }
-  var c = args.at(0);
-  if(c != "'" && c != '"'){
-    return null;
-  }
-  var i = 1;
-  var closedQuotes = false;
-  while(i < args.length && !closedQuotes){
-    if(args.at(i) == c){
-      closedQuotes = true;
-    }
-    i++;
-  }
-  //console.log("Found the quoted part:");
-  //console.log(args.slice(0,i));
-  if(!closedQuotes || i == args.length){
-    return null;
-  }
-  if(args.at(i) != ","){
-    return null;
-  }
-  return i;
-}
-
-function parseArgs(args){
-  if(args.length < 2){
-    return null;
-  }
-  var c = args.at(0);
-  if(c != "'" && c != '"'){
-    return null;
-  }
-  var i = 1;
-  var closedQuotes = false;
-  while(i < args.length && !closedQuotes){
-    if(args.at(i) == c){
-      closedQuotes = true;
-    }
-    i++;
-  }
-  //console.log("Found the quoted part:");
-  //console.log(args.slice(0,i));
-  if(!closedQuotes || i == args.length){
-    return null;
-  }
-  if(args.at(i) != ","){
-    return null;
-  }
-  return args.slice(i+1);
 }
 
 function drawExplicitTreeCode(treeStr){
-  var treeFeedback = loadExplicitTreeCodeHelper(removeUnquotedWhiteSpace(treeStr),0);
-  var tree = treeFeedback[0];
-  var newNumLeaves = treeFeedback[1];
-  var max_y = treeFeedback[2];
-  if(tree != null){
-    root.children = new Array();
-    root = tree;
-    numLeaves = newNumLeaves;
-    if(max_y > canvasHeight){
-      canvasHeight = max_y + levelSpace;
-      var c = document.getElementById("drawing");
-      c.height = canvasHeight;
-    }
-    positionNodes(root,numLeaves);
-    drawAll("drawing");
-  }
-  else{
-    alert("Not a valid explicit game tree.");
-  }
-}
-
-
-function loadExplicitTreeCodeHelper(treeStr,level){
-  var firstToken = treeStr.slice(0,5);
-  if(treeStr == null || !(firstToken == "Esti(" || firstToken == "Node(") || treeStr.at(-1) != ")"){
-    //console.log("unmatched quote or string doesn't start with a constructor");
-    return [null,null,null];
-  }
-  //This catches unmatched quotes, or string doesn't start with one of the tokens
-  var args = treeStr.slice(5,-1);
-  //console.log("args:");
-  //console.log(args);
-  var parsedArgs = parseArgs(args);
-  //console.log("parsedArgs:");
-  //console.log(parsedArgs);
-  if(parsedArgs == null){
-    //console.log("invalid arguments to constructor");
-    return [null, null, null];
-  }
-  var tree = new Node();
-  tree.y = levelSpace/4 + levelSpace * level;
-  if(firstToken == "Esti("){
-    if(isSMLNumber(parsedArgs)){
-      tree.type = LEAF;
-      tree.val = parseSMLInt(parsedArgs);
-      return [tree,1,tree.y];
-    }
-    else{
-      //console.log("second argument of esti constructor was not an integer");
-      return [null,null,null];
-    }
-  }
-  else{
-    tree.type = 1-(level%2);
-    tree.val = null;
-  }
-  //since we're not an esti node, check that parsedArgs is a list
-  if(parsedArgs.length == 0 || !(parsedArgs.at(0) == "[" && parsedArgs.at(-1) == "]")){
-    //console.log("second argument of node constructor was not a list");
-    return [null,null,null];
-  }
-  var strBody = parsedArgs.slice(1,-1);
-  var subTrees = new Array();
-  var parenDepth = 0;
-  var start = 0;
-  var end = 0;
-  for(var i = 0; i < strBody.length; i++){
-    if(i != 0 && parenDepth == 0 && strBody.charAt(i) != "," && strBody.charAt(i-1) == ")"){
-      //console.log("expected a , to separate list entries but didn't find one");
-      return [null,null,null];
-    }
-    end++;
-    if(strBody.charAt(i) == "("){
-      parenDepth++;
-    }
-    else if(strBody.charAt(i) == ")"){
-      parenDepth--;
-      if(parenDepth == 0){
-        subTrees.push(strBody.slice(start,end));
-        start = end;
+  try{
+    var treeFeedback = loadTreeCodeHelper(window.PARSERSML.parse(treeStr),0);
+    var tree = treeFeedback[0];
+    var newNumLeaves = treeFeedback[1];
+    var max_y = treeFeedback[2];
+    if(tree != null){
+      root.children = new Array();
+      root = tree;
+      numLeaves = newNumLeaves;
+      if(max_y > canvasHeight){
+        canvasHeight = max_y + levelSpace;
+        var c = document.getElementById("drawing");
+        c.height = canvasHeight;
       }
-    }
-    else if(parenDepth == 0 && strBody.charAt(i) == ","){
-      start++;
-    }
-    if(parenDepth < 0){
-      //console.log("unmatched parentheses on the left");
-      return [null,null,null];
+      positionNodes(root,numLeaves);
+      drawAll("drawing");
     }
   }
-  if(parenDepth > 0 || subTrees.length == 0){
-    //console.log("unmatched parentheses on the right, or nonleaf had no children");
-    return [null,null,null];
+  catch(e){
+    alert(e.toString());
   }
-  var totalLeaves = 0;
-  var max_y = tree.y;
-  //console.log("subtrees:");
-  for(var i = 0; i < subTrees.length; i++){
-    var candidateFeedback = loadExplicitTreeCodeHelper(subTrees[i],level+1);
-    var candidate = candidateFeedback[0];
-    if(candidate == null){
-      return [null,null,null];
-    }
-    tree.children.push(candidate);
-    candidate.parent = tree;
-    totalLeaves += candidateFeedback[1];
-    max_y = Math.max(max_y,candidateFeedback[2]);
-  }
-  for(var i = 0; i < tree.children.length; i++){
-    tree.alphabetas.push(null);
-  }
-  return [tree,totalLeaves,max_y];
 }
 
-function loadTreeCodeHelper(treeStr,level){
-  //if treeStr encodes a valid tree, it returns an array:
-  // [root node of tree with the same x and y coordinates, # of leaves, # of times resizing]
-  //if not, it returns [null,null,null].
-
-  //first, check if it's a leaf encoding
-  if(treeStr.length < 3 || treeStr.at(0) != "(" || treeStr.at(-1) != ")"){
-    return [null,null,null];
-  }
-
+function loadTreeCodeHelper(parsedTree,level){
   var tree = new Node();
   tree.y = levelSpace/4 + levelSpace * level;
-  var strBody = treeStr.slice(1,-1);
-  if(isNumber(strBody)){
+  if(typeof(parsedTree) == "number"){
     tree.type = LEAF;
-    tree.val = parseFloat(strBody);
+    tree.val = parsedTree;
     return [tree,1,tree.y];
   }
   else{
     tree.type = 1-(level%2);
     tree.val = null;
   }
-  var subTrees = new Array();
-  var parenDepth = 0;
-  var start = 0;
-  var end = 0;
-  for(var i = 0; i < strBody.length; i++){
-    end++;
-    if(strBody.charAt(i) == "("){
-      parenDepth++;
-    }
-    else if(strBody.charAt(i) == ")"){
-      parenDepth--;
-      if(parenDepth == 0){
-        subTrees.push(strBody.slice(start,end));
-        start = end;
-      }
-    }
-    if(parenDepth < 0){
-      return [null,null,null];
-    }
-  }
-  if(parenDepth > 0 || subTrees.length == 0){
-    return [null,null,null];
-  }
   var totalLeaves = 0;
   var max_y = tree.y;
-  for(var i = 0; i < subTrees.length; i++){
-    var candidateFeedback = loadTreeCodeHelper(subTrees[i],level+1);
-    var candidate = candidateFeedback[0];
-    if(candidate == null){
-      return [null,null,null];
-    }
-    tree.children.push(candidate);
-    candidate.parent = tree;
-    totalLeaves += candidateFeedback[1];
-    max_y = Math.max(max_y,candidateFeedback[2]);
+  for(var i = 0; i < parsedTree.length; i++){
+    var childFeedback = loadTreeCodeHelper(parsedTree[i],level+1);
+    var child = childFeedback[0];
+    tree.children.push(child);
+    child.parent = tree;
+    totalLeaves += childFeedback[1];
+    max_y = Math.max(max_y,childFeedback[2]);
   }
   for(var i = 0; i < tree.children.length; i++){
     tree.alphabetas.push(null);
