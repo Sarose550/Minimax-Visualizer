@@ -83,6 +83,8 @@ These can be used for testing as follows:
 > ./ smlnj -m sources.cm
 - ABTests.test*name* ();
 </pre>
+
+- To load a saved tree from SML text, go to ```Load SML``` and paste the SML text once prompted.
 ---
 Built with HTML, CSS, JavaScript.
 
