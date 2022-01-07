@@ -279,7 +279,13 @@ function loadExplicitTree(){
   isEditing = true;
   hideButtons();
   $(nodeOptions).hide();
-  drawExplicitTreeCode(treeStr);
+  try{
+    drawExplicitTreeCode(treeStr);
+  }
+  catch(e){
+    alert("Not a valid explicit game tree.");
+    return;
+  }
 }
 
 function drawTreeCode(treeStr){
