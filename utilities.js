@@ -319,48 +319,83 @@ function removeUnquotedWhiteSpace(str){
   return s.join("");
 }
 
-function removeUnquotedWhiteSpace1(strArray,idx=0,quoteMode=0){
+function removeUnquotedWhiteSpace1(strArray){
   //0 indicates that it's not inside quotes
   //1 indicates that it's inside single quotes
   //2 indicates that it's inside double quotes
   //if the quotes aren't matched up, this returns null.
-  switch(quoteMode){
-    case 0:
-      if(idx == strArray.length){
-        return strArray;
-      }
-      if(strArray[idx] == "'"){
-        return removeUnquotedWhiteSpace1(strArray,idx+1,1);
-      }
-      if(strArray[idx] == '"'){
-        return removeUnquotedWhiteSpace1(strArray,idx+1,2);
-      }
-      if(/\s/.test(strArray[idx])){
-        strArray[idx] = "";
-      }
-      return removeUnquotedWhiteSpace1(strArray,idx+1,0);
-      break;
+  var idx = 0;
+  var quoteMode = 0;
+  while(true){
+    switch(quoteMode){
+      case 0:
+        if(idx == strArray.length){
+          return strArray;
+        }
+        else if(strArray[idx] == "'"){
+          quoteMode = 1;
+        }
+        else if(strArray[idx] == '"'){
+          quoteMode = 2;
+        }
+        if(/\s/.test(strArray[idx])){
+          strArray[idx] = "";
+        }
+        break;
 
-    case 1:
-      if(idx == strArray.length){
-        return null;
-      }
-      if(strArray[idx] == "'"){
-        return removeUnquotedWhiteSpace1(strArray,idx+1,0);
-      }
-      return removeUnquotedWhiteSpace1(strArray,idx+1,1);
-      break;
+      case 1:
+        if(idx == strArray.length){
+          return null;
+        }
+        if(strArray[idx] == "'"){
+          quoteMode = 0;
+        }
+        else{
+          quoteMode = 1;
+        }
+        break;
 
-    case 2:
-      if(idx == strArray.length){
-        return null;
-      }
-      if(strArray[idx] == '"'){
-        return removeUnquotedWhiteSpace1(strArray,idx+1,0);
-      }
-      return removeUnquotedWhiteSpace1(strArray,idx+1,2);
-      break;
+      case 2:
+        if(idx == strArray.length){
+          return null;
+        }
+        if(strArray[idx] == '"'){
+          quoteMode = 0;
+        }
+        else{
+          quoteMode = 2;
+        }
+        break;
+    }
+    idx++;
   }
+}
+
+function findStringLiteral(args){
+  if(args.length < 2){
+    return null;
+  }
+  var c = args.at(0);
+  if(c != "'" && c != '"'){
+    return null;
+  }
+  var i = 1;
+  var closedQuotes = false;
+  while(i < args.length && !closedQuotes){
+    if(args.at(i) == c){
+      closedQuotes = true;
+    }
+    i++;
+  }
+  //console.log("Found the quoted part:");
+  //console.log(args.slice(0,i));
+  if(!closedQuotes || i == args.length){
+    return null;
+  }
+  if(args.at(i) != ","){
+    return null;
+  }
+  return i;
 }
 
 function parseArgs(args){
@@ -411,6 +446,7 @@ function drawExplicitTreeCode(treeStr){
     alert("Not a valid explicit game tree.");
   }
 }
+
 
 function loadExplicitTreeCodeHelper(treeStr,level){
   var firstToken = treeStr.slice(0,5);
