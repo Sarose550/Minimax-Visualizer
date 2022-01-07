@@ -222,6 +222,7 @@ function loadTreeCode(){
   hideButtons();
   $(nodeOptions).hide();
   drawTreeCode(treeStr);
+  unhighlightCells();
 }
 
 function loadExplicitTree(){
@@ -233,13 +234,8 @@ function loadExplicitTree(){
   isEditing = true;
   hideButtons();
   $(nodeOptions).hide();
-  try{
-    drawExplicitTreeCode(treeStr);
-  }
-  catch(e){
-    alert(e.toString());
-    return;
-  }
+  drawExplicitTreeCode(treeStr);
+  unhighlightCells();
 }
 
 function drawTreeCode(treeStr){
