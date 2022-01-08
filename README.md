@@ -44,7 +44,7 @@ The string representations for trees are unique, and can be defined recursively 
 - A leaf node with value *v* is represented by ```"(v)"```.
 - A node whose children (from left to right) have strings S<sub>1</sub>, S<sub>2</sub>, ..., S<sub>n</sub> is represented by ```"(```S<sub>1</sub> S<sub>2</sub> ... S<sub>n</sub>```)"```.
 
-## For 15-150 Principles of Functional Programming
+## For CMU 15-150 Principles of Functional Programming
 
 **Explicit Game Trees**
 
