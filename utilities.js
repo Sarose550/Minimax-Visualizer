@@ -1,5 +1,12 @@
 const onclicks = ["showFirst();","showPrev();","","showNext();","showLast();"]
 
+function smlInt(x){
+  if(x < 0){
+    return "~" + (-x);
+  }
+  return "" + x;
+}
+
 function highlightCell(i,j){
   for(var x = 0; x < 2; x++){
     for(var y = 0; y < 3; y++){
