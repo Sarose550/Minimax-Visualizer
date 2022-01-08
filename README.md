@@ -59,7 +59,7 @@ The explicit game tree datatype is defined as follows:
 **Use For Testing:**
 If you want to run your ```AlphaBeta.fun``` implementation on a tree, do the following:
   1. Go to ```ABTests.sml```. Navigate to the definition of ```structure ABTests```.
-  Copy and paste the following, and fill in the information where indicated (here, name can be anything you would like to name the test case so long as it is a valid variable name):
+  Copy and paste the following, and fill in the information where indicated (here, name can be anything you would like to name the test case so long as it is a valid identifier):
   <pre>
   local
     structure Test*name* = AlphaBeta (
