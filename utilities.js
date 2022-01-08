@@ -111,18 +111,21 @@ function drawEx1(){
   isEditing = true;
   drawTreeCode('(((((3)(17))((2)(12)))(((15))((25)(0))))((((2)(5))((3)))(((2)(14)))))');
   $(nodeOptions).hide();
+  unhighlightCells();
 }
 
 function drawEx2(){
   isEditing = true;
   drawTreeCode('((((4)(5))((1))((2)(-3)))(((4)(0))((2)(-2))))');
   $(nodeOptions).hide();
+  unhighlightCells();
 }
 
 function drawEx3(){
   isEditing = true;
   drawTreeCode('(((((5)(6))((7)(4)(5)))(((3))))((6)(((7))))((((5)))(((9)(8))((6)))))');
   $(nodeOptions).hide();
+  unhighlightCells();
 }
 
 function initRoot(){
