@@ -209,9 +209,9 @@ function toTreeCode(node){
 
 function toExplicitTree(node,str="a"){
   if(node.type == LEAF){
-    return 'Esti("' + str + '",' + smlInt(node.val) + ')';
+    return 'ExplicitGame.State.Esti("' + str + '",' + smlInt(node.val) + ')';
   }
-  var treeStr = 'Node("' + str + '",[';
+  var treeStr = 'ExplicitGame.State.Node("' + str + '",[';
   for(var i = 0; i < node.children.length; i++){
     if(i != 0){
       treeStr += ",";
@@ -236,7 +236,7 @@ function loadTreeCode(){
 }
 
 function loadExplicitTree(){
-  var treeStr = prompt("Type a tree encoding:");
+  var treeStr = prompt("Type a tree value:");
 
   if (treeStr == null) {
     return;

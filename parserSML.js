@@ -149,23 +149,23 @@ window.PARSERSML = /*
         peg$c5 = "'",
         peg$c6 = peg$literalExpectation("'", false),
         peg$c7 = function(middle) {return middle;},
-        peg$c8 = "Node",
-        peg$c9 = peg$literalExpectation("Node", false),
+        peg$c8 = "ExplicitGame.State.Node",
+        peg$c9 = peg$literalExpectation("ExplicitGame.State.Node", false),
         peg$c10 = "(",
         peg$c11 = peg$literalExpectation("(", false),
         peg$c12 = ",",
         peg$c13 = peg$literalExpectation(",", false),
         peg$c14 = ")",
         peg$c15 = peg$literalExpectation(")", false),
-        peg$c16 = function(trees) {return trees},
+        peg$c16 = function(trees) {return trees;},
         peg$c17 = "[",
         peg$c18 = peg$literalExpectation("[", false),
-        peg$c19 = function(t) {return t},
+        peg$c19 = function(t) {return t;},
         peg$c20 = "]",
         peg$c21 = peg$literalExpectation("]", false),
         peg$c22 = function(trees) {return [trees[0]].concat(trees[1]);},
-        peg$c23 = "Esti",
-        peg$c24 = peg$literalExpectation("Esti", false),
+        peg$c23 = "ExplicitGame.State.Esti",
+        peg$c24 = peg$literalExpectation("ExplicitGame.State.Esti", false),
         peg$c25 = function(int) {return int;},
         peg$c26 = peg$otherExpectation("integer"),
         peg$c27 = "~",
@@ -477,9 +477,9 @@ window.PARSERSML = /*
       var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9;
 
       s0 = peg$currPos;
-      if (input.substr(peg$currPos, 4) === peg$c8) {
+      if (input.substr(peg$currPos, 23) === peg$c8) {
         s1 = peg$c8;
-        peg$currPos += 4;
+        peg$currPos += 23;
       } else {
         s1 = peg$FAILED;
         if (peg$silentFails === 0) { peg$fail(peg$c9); }
@@ -668,9 +668,9 @@ window.PARSERSML = /*
       var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
 
       s0 = peg$currPos;
-      if (input.substr(peg$currPos, 4) === peg$c23) {
+      if (input.substr(peg$currPos, 23) === peg$c23) {
         s1 = peg$c23;
-        peg$currPos += 4;
+        peg$currPos += 23;
       } else {
         s1 = peg$FAILED;
         if (peg$silentFails === 0) { peg$fail(peg$c24); }
