@@ -128,6 +128,20 @@ function drawEx3(){
   unhighlightCells();
 }
 
+function drawEx4(){
+  isEditing = true;
+  drawTreeCode('(((3)(6)(-2))((6)(4)(10))((1)(30)(9)))');
+  $(nodeOptions).hide();
+  unhighlightCells();
+}
+
+function drawEx5(){
+  isEditing = true;
+  drawTreeCode('(((((3)(5))((2)(7)))(((10)(4))))((((2)(7)))(((8)(2))((4)(6)))))');
+  $(nodeOptions).hide();
+  unhighlightCells();
+}
+
 function initRoot(){
   root = new Node();
   root.type = LEAF;
