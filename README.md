@@ -86,6 +86,8 @@ These can be used for testing as follows:
 
 - To load a saved tree from SML text, go to ```Load SML``` and paste the SML text once prompted.
 ---
+If you have any questions or think there's a bug, feel free to email me at (mailto:lunde@adobe.com?subject=[GitHub]%20Minimax%20Visualizer).
+
 Built with HTML, CSS, JavaScript.
 
 GitHub Pages Link: https://sarose550.github.io/Minimax-Visualizer/
