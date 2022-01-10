@@ -159,11 +159,10 @@ function initRoot(){
       if (e.defaultPrevented) {
         return;
      }
+     if(!isEditing){
       switch (e.keyCode) {
           case 32:
-            if(!isEditing || !paused){
-              playBtnClick();
-            }
+            playBtnClick();
             break;
           case 37:
             showPrev();
@@ -174,6 +173,7 @@ function initRoot(){
       }
       e.preventDefault();
     }
+  }
 }, true);
 }
 
