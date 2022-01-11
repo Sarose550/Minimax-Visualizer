@@ -56,8 +56,24 @@ The explicit game tree datatype is defined as follows:
 **Copy SML:**
 - The ```Copy SML``` button under ```Options``` copies to your clipboard the current tree, represented as a ```gameTree``` in SML text. (Note: The trees you create with this page do not make use of the ```Outcome``` constructor.)
 
+**Load SML**
+- The ```Load SML``` button under ```Options``` enables you to load a tree from SML text, allowing for easier sharing of test cases. (Note: The cases testSmall and testBig are examples 4 and 5, respectively).
+
 **Use For Testing:**
 If you want to run your ```AlphaBeta.fun``` implementation on a tree, do the following:
+  1. Select ```Copy SML``` to copy the tree to your clipboard.
+  2. Enter 
+  <pre> > ./ smlnj -m sources.cm </pre> 
+  into the REPL.
+  3. Type 
+  <pre>
+  - structure Custom = CustomABTest(val tree = <paste tree here>);
+  </pre>
+  4. The structure ```Custom``` can be used to test your tree as follows:
+  <pre>
+  - Custom.testCustom ();
+  </pre>
+Alternatively, if you would like to avoid copying the same test cases repeatedly, you can follow these instructions:
   1. Go to ```ABTests.sml```. Navigate to the definition of ```structure ABTests```.
   Copy and paste the following, and fill in the information where indicated (here, name can be anything you would like to name the test case so long as it is a valid identifier):
   <pre>
