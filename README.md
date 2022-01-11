@@ -63,8 +63,7 @@ The explicit game tree datatype is defined as follows:
 If you want to run your ```AlphaBeta.fun``` implementation on a tree, do the following:
   1. Select ```Copy SML``` to copy the tree to your clipboard.
   2. Enter 
-  <pre> > ./ smlnj -m sources.cm </pre> 
-  into the REPL.
+  <pre> > ./ smlnj -m sources.cm </pre> into the REPL.
   3. Type 
   <pre>
   - structure Custom = CustomABTest(val tree = (*paste tree here*));</pre>
