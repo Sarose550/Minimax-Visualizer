@@ -67,12 +67,10 @@ If you want to run your ```AlphaBeta.fun``` implementation on a tree, do the fol
   into the REPL.
   3. Type 
   <pre>
-  - structure Custom = CustomABTest(val tree = <paste tree here>);
-  </pre>
+  - structure Custom = CustomABTest(val tree = (*paste tree here*));</pre>
   4. The structure ```Custom``` can be used to test your tree as follows:
   <pre>
-  - Custom.testCustom ();
-  </pre>
+  - Custom.testCustom ();</pre>
 Alternatively, if you would like to avoid copying the same test cases repeatedly, you can follow these instructions:
   1. Go to ```ABTests.sml```. Navigate to the definition of ```structure ABTests```.
   Copy and paste the following, and fill in the information where indicated (here, name can be anything you would like to name the test case so long as it is a valid identifier):
